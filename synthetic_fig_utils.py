@@ -222,3 +222,59 @@ def get_ticks(ticklabels, ticklines):
             xticks.append( (t.get_text(), t.get_window_extent().x0, t.get_window_extent().y0,
                             t.get_window_extent().x1, t.get_window_extent().y1, tx,ty) )
     return xticks
+
+
+def replace_label(w,i,eqs,inlines, 
+                 latex_replacements = {r'\.':r'.'}):
+    w2 = []
+    icount = 0
+    for j in range(len(w)):
+        if eqs[j]: # yes, replace
+            replace = inlines[i[icount]]
+            for lr,rp in latex_replacements.items():
+                if lr in replace:
+                    replace = replace.replace(lr,rp)
+            w2.append(replace)
+            icount+=1
+        else: 
+            w2.append(w[j])
+    return np.array(w2)
+
+
+def get_titles_or_labels(words, cap, eq, inlines, nwords=1):
+    """
+    Return a title or x/y axes label
+    words : list of words to pull from
+    cap : if 'first' will just be the first words capitalized, 
+          if 'all' the totality of words will be capitalized
+    eq : probability of flipping from a word to an equation
+    inlines : list of "in line" math formulas in tex
+    """
+    i = np.random.randint(0,len(words),size=nwords)
+    w = np.array(words)[i]
+    probs, choices = [],[]
+    for k,v in cap.items():
+        choices.append(k)
+        probs.append(v)
+    c = np.random.choice(choices, p=probs)
+    if c == 'first':
+        for i in range(len(w)):
+            w[i] = w[i].capitalize()
+    elif c == 'all':
+        for i in range(len(w)):
+            w[i] = w[i].upper()
+    # turn any into random equation?
+    p = np.random.uniform(0,1, size=len(w))
+    eqs = p <= eq['prob']
+    if len(w[eqs]) > 0: # have some words
+        i = np.random.randint(0,len(inlines),size=len(w[eqs])) # grab these inlines
+        w = replace_label(w,i,eqs,inlines)
+
+    w = w.tolist()
+
+    if len(w) > 1:
+        wout = r" ".join(w)
+    else:
+        wout = w[0]
+    wout = wout.replace('\n', '')
+    return wout
