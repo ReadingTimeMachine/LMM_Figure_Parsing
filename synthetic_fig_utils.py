@@ -278,3 +278,5 @@ def get_titles_or_labels(words, cap, eq, inlines, nwords=1):
         wout = w[0]
     wout = wout.replace('\n', '')
     return wout
+
+
