@@ -200,6 +200,30 @@ def normalize_params_prob(plot_types_params, panel_params,
             print('renormalizing...')
             print('now: ', plot_types_params['scatter']['color bar']['location probs'])
 
+    # images or contours
+    # 'image or contour':{'prob':{'image':0.5, 'contour':0.5, 'both':0.5}
+    p = 0.0
+    for k,v in plot_types_params['contour']['color bar']['location probs'].items():
+        p += v
+    if p != 1.0:
+        for k,v in plot_types_params['contour']['color bar']['location probs'].items():
+            plot_types_params['contour']['color bar']['location probs'][k] = v/p
+        if verbose:
+            print("plot_types_params['contour']['color bar']['location probs'] did not add to 1! total =", p)
+            print('renormalizing...')
+            print('now: ', plot_types_params['contour']['color bar']['location probs'])
+
+    p = 0.0
+    for k,v in plot_types_params['contour']['image or contour']['prob'].items():
+        p += v
+    if p != 1.0:
+        for k,v in plot_types_params['contour']['image or contour']['prob'].items():
+            plot_types_params['contour']['image or contour']['prob'][k] = v/p
+        if verbose:
+            print("plot_types_params['contour']['image or contour']['prob'] did not add to 1! total =", p)
+            print('renormalizing...')
+            print('now: ', plot_types_params['contour']['image or contour']['prob'])
+
     return plot_types_params, panel_params, title_params, xlabel_params, ylabel_params
 
 
