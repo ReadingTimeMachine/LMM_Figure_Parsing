@@ -304,3 +304,27 @@ def get_titles_or_labels(words, cap, eq, inlines, nwords=1):
     return wout
 
 
+
+def get_font_info(fontsizes, font_names):
+    # font sizes
+    title_fontsize = int(round(np.random.uniform(low=fontsizes['title']['min'], 
+                                                 high=fontsizes['title']['max'])))
+    xlabel_fontsize = int(round(np.random.uniform(low=fontsizes['xlabel']['min'], 
+                                                 high=fontsizes['xlabel']['max'])))
+    if not fontsizes['x/y label same']:
+        ylabel_fontsize = int(round(np.random.uniform(low=fontsizes['ylabel']['min'], 
+                                                      high=fontsizes['ylabel']['max'])))
+    else:
+        ylabel_fontsize = xlabel_fontsize # for consistancy
+    xlabel_ticks_fontsize = int(round(np.random.uniform(low=fontsizes['ticks']['min'], 
+                                                  high=fontsizes['ticks']['max'])))
+    if not fontsizes['x/y ticks same']:
+        ylabel_ticks_fontsize = int(round(np.random.uniform(low=fontsizes['ticks']['min'], 
+                                                      high=fontsizes['ticks']['max'])))
+    else:
+        ylabel_ticks_fontsize = xlabel_ticks_fontsize # for consistancy
+
+    # get fonts
+    csfont = {'fontname':np.random.choice(font_names)}
+
+    return title_fontsize, xlabel_fontsize, ylabel_fontsize, xlabel_ticks_fontsize, ylabel_ticks_fontsize, csfont
