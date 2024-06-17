@@ -224,6 +224,28 @@ def normalize_params_prob(plot_types_params, panel_params,
             print('renormalizing...')
             print('now: ', plot_types_params['contour']['image or contour']['prob'])
 
+    # distribution probabilities
+    #print('')
+    for k1 in ['line','histogram','scatter','contour']:
+        p=0
+        if 'distribution' in plot_types_params[k1]:
+            for dist,vals in plot_types_params[k1]['distribution'].items():
+                p += vals['prob']
+            #print('p is:', p)
+            if p != 1.0:
+                ps = plot_types_params[k1]['distribution'].copy()
+                for k,v in plot_types_params[k1]['distribution'].items():
+                    ps[k]['prob'] = v['prob']/p
+                plot_types_params[k1]['distribution'] = ps
+                if verbose:
+                    print("plot_types_params['" + str(k1) + "']['distribution'] probabilities did not add to 1! total =", p)
+                    print('renormalizing...')
+                    ps = []
+                    for k2,v2 in plot_types_params[k1]['distribution'].items():
+                        #print(v2)
+                        ps.append(v2['prob'])
+                    print('now: ', ps)
+
     return plot_types_params, panel_params, title_params, xlabel_params, ylabel_params
 
 
