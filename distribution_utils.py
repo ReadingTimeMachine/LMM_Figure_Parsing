@@ -62,7 +62,7 @@ def get_random_data(plot_type,xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=0,
     if plot_type == 'line':
         p = np.random.uniform(0,1)
         xs = []
-        if p <= prob_same_x: # same x
+        if p <= prob_same_x: # same x for all y
             x = get_random(xmin,xmax,ndims=1,npoints=npoints)
             x = np.sort(x)
             # repeat for all
