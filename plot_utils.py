@@ -5,7 +5,7 @@ mpl.rcParams['text.usetex'] = True
 mpl.rcParams['text.latex.preamble'] = r'\usepackage{amsmath} \usepackage{amssymb}' #for \text command
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
-
+from PIL import ImageColor
 
 # for scatter plot markers
 from matplotlib.lines import Line2D
@@ -27,6 +27,10 @@ markers = np.array(markers,dtype=object)
 from synthetic_fig_utils import get_line_styles
 linestyles = get_line_styles()
 
+# for colors
+# how many random colors to generate?
+# e.g. colors = colors_(6)
+colors_ = lambda n: list(map(lambda i: "#" + "%06x" % np.random.randint(0, 0xFFFFFF),range(n)))
 
 
 # LINES PLOT

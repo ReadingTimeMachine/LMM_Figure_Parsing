@@ -1,6 +1,6 @@
 # utils to get locations of different objects in pixel coords
 
-#import numpy as np
+import numpy as np
 
 def get_errorbar_pixels(datain,ax):
     # x/y error bars

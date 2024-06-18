@@ -41,7 +41,7 @@ ylabel_params = {'prob':0.90, 'n words':{'min':1, 'max':3},
 ######## PLOT PARAMS ############
 plot_types_params = {
                      'line':{
-                         'prob':1, # probability of getting this plot
+                         'prob':0, # probability of getting this plot
                          'npoints':{'min':10,'max':11}, 
                          'line thick':{'min':1, 'max':5},
                          'nlines':{'min':2, 'max':3}, 
@@ -73,7 +73,7 @@ plot_types_params = {
                                       }
                          }
                      },
-                     'histogram':{'prob':0,
+                     'histogram':{'prob':1,
                          'npoints':{'min':10,'max':10000}, # points for distribution
                          'nbins':{'min':1, 'max':100}, # number of bars
                          'rwidth':{'min':0.2,'max':1.0}, # bin width
