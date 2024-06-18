@@ -73,7 +73,7 @@ plot_types_params = {
                                       }
                          }
                      },
-                     'histogram':{'prob':1,
+                     'histogram':{'prob':0,
                          'npoints':{'min':10,'max':10000}, # points for distribution
                          'nbins':{'min':1, 'max':100}, # number of bars
                          'rwidth':{'min':0.2,'max':1.0}, # bin width
@@ -134,7 +134,7 @@ plot_types_params = {
                                       }
                          }
                        },
-                     'contour':{'prob':0,                        
+                     'contour':{'prob':1,                        
                          'npoints':{'nx':{'min':10,'max':100}, 'ny':{'min':10,'max':100}}, 
                          'nlines':{'min':3, 'max':10}, # number of contour lines
                          # 'markers':{
@@ -146,7 +146,7 @@ plot_types_params = {
                                      'size percent':{'min':0.05, 'max':0.15},
                                      'pad':{'min':0.01, 'max':0.2}
                                      },
-                         'image or contour':{'prob':{'image':1, 'contour':1, 'both':1}, # probability that this is just an image w/o contour lines (or both) 
+                         'image or contour':{'prob':{'image':1, 'contour':0, 'both':0}, # probability that this is just an image w/o contour lines (or both) 
                                             'both contours':{'prob gray': 0.95, # probability that you'll have just gray colors for contours
                                                             }
                                             }, 
@@ -155,7 +155,7 @@ plot_types_params = {
                          'ymin':-10000,
                          'ymax':10000,
                          'distribution': {
-                             'random':{'prob':1},
+                             'random':{'prob':0},
                              'linear':{'prob':1, 
                                        'intersect':(-100,100), # range of "a" in mx + a
                                        'slope':(-5, 5), # range of "m" in mx + a
