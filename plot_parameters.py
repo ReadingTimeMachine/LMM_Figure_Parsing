@@ -65,15 +65,26 @@ plot_types_params = {
                                }, 
                             },
                          'distribution': {
-                             'random':{'prob':1},
-                             'linear':{'prob':1, 
+                             'random':{'prob':0},
+                             'linear':{'prob':0, 
                                        'intersect':(-100,100), # range of "a" in mx + a
                                        'slope':(-5, 5), # range of "m" in mx + a
                                        'noise':(0, 0.25) # noise % range
-                                      }
+                                      },
+                             'gmm':{ # gaussian mixture model
+                                 'prob':1, 
+                                 'xmin':-10000, # ranges
+                                 'xmax':10000,
+                                 'ymin':-10000,
+                                 'ymax':10000, 
+                                 'nclusters':{'min':1, 'max':20},
+                                 'nsamples':{'min':10, 'max':500},
+                                 'cluster std':{'min':0.01, 'max':10}, # in terms of factors of the x/y ranges
+                                 'noise':{'min':0.05,'max':0.25} # for noise in distribution and color when applicable
+                             }
                          }
                      },
-                     'histogram':{'prob':1,
+                     'histogram':{'prob':0,
                          'npoints':{'min':10,'max':10000}, # points for distribution
                          'nbins':{'min':1, 'max':100}, # number of bars
                          'rwidth':{'min':0.2,'max':1.0}, # bin width
@@ -98,7 +109,7 @@ plot_types_params = {
                                       }
                          }
                     }, 
-                     'scatter':{'prob':1,                        
+                     'scatter':{'prob':0,                        
                          'npoints':{'min':10,'max':100}, 
                          'markers':{
                                'size':{'min':1, 'max':30}
@@ -131,10 +142,22 @@ plot_types_params = {
                                        'slope':(-5, 5), # range of "m" in mx + a
                                        'noise':(0, 0.25), # noise % range
                                        'color noise prob': 0.5 # linear relationship between x/y and color?
-                                      }
+                                      },
+                             'gmm':{ # gaussian mixture model
+                                 'prob':1, 
+                                 'xmin':-10000, # ranges
+                                 'xmax':10000,
+                                 'ymin':-10000,
+                                 'ymax':10000, 
+                                 'nclusters':{'min':1, 'max':20},
+                                 'nsamples':{'min':10, 'max':500},
+                                 'cluster std':{'min':0.01, 'max':10}, # in terms of factors of the x/y ranges
+                                 'noise':{'min':0.05,'max':0.25}, # for noise in distribution and color when applicable
+                                 'color noise prob': 0.5 # gmm relationship between x/y and color?
+                             }
                          }
                        },
-                     'contour':{'prob':1,                        
+                     'contour':{'prob':0,                        
                          'npoints':{'nx':{'min':10,'max':100}, 'ny':{'min':10,'max':100}}, 
                          'nlines':{'min':3, 'max':10}, # number of contour lines
                          # 'markers':{
