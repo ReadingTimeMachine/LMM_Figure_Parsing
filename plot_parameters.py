@@ -41,7 +41,7 @@ ylabel_params = {'prob':0.90, 'n words':{'min':1, 'max':3},
 ######## PLOT PARAMS ############
 plot_types_params = {
                      'line':{
-                         'prob':0, # probability of getting this plot
+                         'prob':1, # probability of getting this plot
                          'npoints':{'min':10,'max':11}, 
                          'line thick':{'min':1, 'max':5},
                          'nlines':{'min':2, 'max':3}, 
@@ -65,7 +65,7 @@ plot_types_params = {
                                }, 
                             },
                          'distribution': {
-                             'random':{'prob':0},
+                             'random':{'prob':1},
                              'linear':{'prob':1, 
                                        'intersect':(-100,100), # range of "a" in mx + a
                                        'slope':(-5, 5), # range of "m" in mx + a
@@ -73,7 +73,7 @@ plot_types_params = {
                                       }
                          }
                      },
-                     'histogram':{'prob':0,
+                     'histogram':{'prob':1,
                          'npoints':{'min':10,'max':10000}, # points for distribution
                          'nbins':{'min':1, 'max':100}, # number of bars
                          'rwidth':{'min':0.2,'max':1.0}, # bin width
@@ -98,7 +98,7 @@ plot_types_params = {
                                       }
                          }
                     }, 
-                     'scatter':{'prob':0,                        
+                     'scatter':{'prob':1,                        
                          'npoints':{'min':10,'max':100}, 
                          'markers':{
                                'size':{'min':1, 'max':30}
@@ -125,7 +125,7 @@ plot_types_params = {
                                },
                              },
                          'distribution': {
-                             'random':{'prob':0},
+                             'random':{'prob':1},
                              'linear':{'prob':1, 
                                        'intersect':(-100,100), # range of "a" in mx + a
                                        'slope':(-5, 5), # range of "m" in mx + a
@@ -146,7 +146,7 @@ plot_types_params = {
                                      'size percent':{'min':0.05, 'max':0.15},
                                      'pad':{'min':0.01, 'max':0.2}
                                      },
-                         'image or contour':{'prob':{'image':1, 'contour':0, 'both':0}, # probability that this is just an image w/o contour lines (or both) 
+                         'image or contour':{'prob':{'image':1, 'contour':1, 'both':1}, # probability that this is just an image w/o contour lines (or both) 
                                             'both contours':{'prob gray': 0.95, # probability that you'll have just gray colors for contours
                                                             }
                                             }, 
@@ -155,7 +155,7 @@ plot_types_params = {
                          'ymin':-10000,
                          'ymax':10000,
                          'distribution': {
-                             'random':{'prob':0},
+                             'random':{'prob':1},
                              'linear':{'prob':1, 
                                        'intersect':(-100,100), # range of "a" in mx + a
                                        'slope':(-5, 5), # range of "m" in mx + a
