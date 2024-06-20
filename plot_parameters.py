@@ -41,7 +41,7 @@ ylabel_params = {'prob':0.90, 'n words':{'min':1, 'max':3},
 ######## PLOT PARAMS ############
 plot_types_params = {
                      'line':{
-                         'prob':1, # probability of getting this plot
+                         'prob':0, # probability of getting this plot
                          'npoints':{'min':10,'max':11}, 
                          'line thick':{'min':1, 'max':5},
                          'nlines':{'min':2, 'max':3}, 
@@ -65,8 +65,8 @@ plot_types_params = {
                                }, 
                             },
                          'distribution': {
-                             'random':{'prob':0},
-                             'linear':{'prob':0, 
+                             'random':{'prob':1},
+                             'linear':{'prob':1, 
                                        'intersect':(-100,100), # range of "a" in mx + a
                                        'slope':(-5, 5), # range of "m" in mx + a
                                        'noise':(0, 0.25) # noise % range
@@ -85,6 +85,7 @@ plot_types_params = {
                          }
                      },
                      'histogram':{'prob':0,
+                         #'histogram as line plot prob':0.25, # plot this histo as a line?
                          'npoints':{'min':10,'max':10000}, # points for distribution
                          'nbins':{'min':1, 'max':100}, # number of bars
                          'rwidth':{'min':0.2,'max':1.0}, # bin width
@@ -106,10 +107,21 @@ plot_types_params = {
                                        'intersect':(-100,100), # range of "a" in mx + a
                                        'slope':(-5, 5), # range of "m" in mx + a
                                        'noise':(0, 0.25) # noise % range 
-                                      }
+                                      },
+                             'gmm':{ # gaussian mixture model
+                                 'prob':1, 
+                                 'xmin':-10000, # ranges
+                                 'xmax':10000,
+                                 'ymin':-10000,
+                                 'ymax':10000, 
+                                 'nclusters':{'min':1, 'max':20},
+                                 'nsamples':{'min':10, 'max':500},
+                                 'cluster std':{'min':0.01, 'max':10}, # in terms of factors of the x/y ranges
+                                 'noise':{'min':0.05,'max':0.25} # for noise in distribution and color when applicable
+                             }
                          }
                     }, 
-                     'scatter':{'prob':0,                        
+                     'scatter':{'prob':1,                        
                          'npoints':{'min':10,'max':100}, 
                          'markers':{
                                'size':{'min':1, 'max':30}
@@ -136,8 +148,8 @@ plot_types_params = {
                                },
                              },
                          'distribution': {
-                             'random':{'prob':1},
-                             'linear':{'prob':1, 
+                             'random':{'prob':0},
+                             'linear':{'prob':0, 
                                        'intersect':(-100,100), # range of "a" in mx + a
                                        'slope':(-5, 5), # range of "m" in mx + a
                                        'noise':(0, 0.25), # noise % range
