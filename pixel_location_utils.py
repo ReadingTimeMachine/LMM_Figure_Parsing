@@ -1,6 +1,7 @@
 # utils to get locations of different objects in pixel coords
 
 import numpy as np
+import cv2 as cv
 
 def get_errorbar_pixels(datain,ax):
     # x/y error bars
@@ -180,3 +181,25 @@ def get_data_pixel_locations(data_from_plot, plot_type, ax, width, height):
     else:
         print('get_data_pixel_locations: not implemented!')
         import sys; sys.exit()
+
+
+
+def plot_color_bar(v,img,imgplot):
+# colormap
+    xmin,ymin = int(round(v['color bar']['xmin'])), int(round(img.shape[0]-v['color bar']['ymin']))
+    xmax,ymax = int(round(v['color bar']['xmax'])), int(round(img.shape[0]-v['color bar']['ymax']))
+    cv.rectangle(imgplot, (xmin,ymin), (xmax,ymax), (255, 0, 0), 3)
+    # colormap ticks
+    if 'color bar ticks' in v:
+        for d in v['color bar ticks']:
+            xmin,ymin,xmax,ymax = int(d['xmin']),int(img.shape[0]-d['ymin']),int(d['xmax']),int(img.shape[0]-d['ymax'])
+            # check if we should have it or not
+            if v['color bar']['params']['side'] == 'bottom' or v['color bar']['params']['side'] == 'top':
+                if d['tx']>=v['color bar']['xmin'] and d['tx']<=v['color bar']['xmax']:
+                    cv.rectangle(imgplot, (xmin,ymin), (xmax,ymax), (255, 0, 0), 3)
+                    cv.circle(imgplot, (int(d['tx']), int(img.shape[0]-d['ty'])), 10, (255,0,0), -1)
+            else: # side
+                if d['ty']>=v['color bar']['ymin'] and d['ty']<=v['color bar']['ymax']:
+                    cv.rectangle(imgplot, (xmin,ymin), (xmax,ymax), (255, 0, 0), 3)
+                    cv.circle(imgplot, (int(d['tx']), int(img.shape[0]-d['ty'])), 10, (255,0,0), -1)
+    return imgplot
