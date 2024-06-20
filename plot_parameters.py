@@ -73,6 +73,10 @@ plot_types_params = {
                                       },
                              'gmm':{ # gaussian mixture model
                                  'prob':1, 
+                                 'histogram as line':{ # plot this histo as a line?
+                                     'prob':0.25, 
+                                     'factor':1000
+                                 }, 
                                  'xmin':-10000, # ranges
                                  'xmax':10000,
                                  'ymin':-10000,
@@ -84,8 +88,7 @@ plot_types_params = {
                              }
                          }
                      },
-                     'histogram':{'prob':0,
-                         #'histogram as line plot prob':0.25, # plot this histo as a line?
+                     'histogram':{'prob':1,
                          'npoints':{'min':10,'max':10000}, # points for distribution
                          'nbins':{'min':1, 'max':100}, # number of bars
                          'rwidth':{'min':0.2,'max':1.0}, # bin width
@@ -102,8 +105,8 @@ plot_types_params = {
                             },
                          'horizontal prob':0.25, # probability that we have a horizontal bar plot
                          'distribution': {
-                             'random':{'prob':1},
-                             'linear':{'prob':1, 
+                             'random':{'prob':0},
+                             'linear':{'prob':0, 
                                        'intersect':(-100,100), # range of "a" in mx + a
                                        'slope':(-5, 5), # range of "m" in mx + a
                                        'noise':(0, 0.25) # noise % range 
@@ -121,7 +124,7 @@ plot_types_params = {
                              }
                          }
                     }, 
-                     'scatter':{'prob':1,                        
+                     'scatter':{'prob':0,                        
                          'npoints':{'min':10,'max':100}, 
                          'markers':{
                                'size':{'min':1, 'max':30}
