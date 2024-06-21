@@ -228,13 +228,13 @@ def get_linear_data(plot_type, dist_params,
     elif plot_type == 'scatter':
         # x/y
         xs = get_random(xmin,xmax,ndims=1,npoints=npoints) # this will be random still
-        ys, data = get_linear(xs,ndims=1,npoints=npoints,
+        ys, data_points = get_linear(xs,ndims=1,npoints=npoints,
                       a1=dist_params['intersect'],
                       m1=dist_params['slope'],
                       noise1=dist_params['noise'])    
         # colors linear?
         if np.random.uniform(0,1) <= dist_params['color noise prob']:
-            colors, data = get_linear(xs,ys,ndims=2, 
+            colors, data_color = get_linear(xs,ys,ndims=2, 
                                npoints=(npoints,npoints),
                       a1=dist_params['intersect'],
                       m1=dist_params['slope'],
@@ -246,10 +246,12 @@ def get_linear_data(plot_type, dist_params,
             
         else:
             colors = get_random(cmin,cmax,ndims=1,npoints=npoints)
+            data_color = 'random'
 
         #ys = get_random(ymin,ymax,ndims=1,npoints=npoints)
         #colors = get_random(cmin,cmax,ndims=1,npoints=npoints)
         # is color linear?
+        data = {'points':data_points, 'colors':data_color}
         return xs,ys,colors, data
     elif plot_type == 'histogram': # I feel like this doesn't make too 
                                    # much sense for histograms, but lets just do it
