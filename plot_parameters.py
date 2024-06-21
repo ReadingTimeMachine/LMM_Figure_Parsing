@@ -83,7 +83,7 @@ plot_types_params = {
                                  'ymax':10000, 
                                  'nclusters':{'min':1, 'max':20},
                                  'nsamples':{'min':10, 'max':500},
-                                 'cluster std':{'min':0.01, 'max':10}, # in terms of factors of the x/y ranges
+                                 'cluster std':{'min':-2, 'max':2}, # in terms of factors of the x/y ranges
                                  'noise':{'min':0.05,'max':0.25} # for noise in distribution and color when applicable
                              }
                          }
@@ -119,7 +119,7 @@ plot_types_params = {
                                  'ymax':10000, 
                                  'nclusters':{'min':1, 'max':20},
                                  'nsamples':{'min':10, 'max':500},
-                                 'cluster std':{'min':0.01, 'max':10}, # in terms of factors of the x/y ranges
+                                 'cluster std':{'min':-2, 'max':2}, # in terms of factors of the x/y ranges
                                  'noise':{'min':0.05,'max':0.25} # for noise in distribution and color when applicable
                              }
                          }
@@ -166,7 +166,7 @@ plot_types_params = {
                                  #'ymax':10000, 
                                  'nclusters':{'min':1, 'max':5},
                                  'nsamples':{'min':10, 'max':500},
-                                 'cluster std':{'min':0.01, 'max':1000}, # in terms of factors of the x/y ranges
+                                 'cluster std':{'min':-2, 'max':2}, # in terms of factors of the x/y ranges
                                  'noise':{'min':0.05,'max':0.25}, # for noise in distribution and color when applicable
                                  'color noise prob': 0.5 # gmm relationship between x/y and color?
                              }
@@ -204,7 +204,7 @@ plot_types_params = {
                                  'nclusters':{'min':1, 'max':5},
                                  #'nsamples':{'min':10, 'max':500},
                                  'upsample factor log':{'min':3, 'max':6}, # upsample number of points, 10^X
-                                 'cluster std':{'min':0.01, 'max':10}, # in terms of factors of the x/y ranges
+                                 'cluster std':{'min':-2, 'max':2}, # in terms of factors of the x/y ranges
                                  'noise':{'min':0.05,'max':0.25}, # for noise in distribution and color when applicable
                                  'color noise prob': 0.5 # gmm relationship between x/y and color?
                              }
