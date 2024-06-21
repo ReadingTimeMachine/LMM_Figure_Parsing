@@ -41,7 +41,7 @@ ylabel_params = {'prob':0.90, 'n words':{'min':1, 'max':3},
 ######## PLOT PARAMS ############
 plot_types_params = {
                      'line':{
-                         'prob':0, # probability of getting this plot
+                         'prob':1, # probability of getting this plot
                          'npoints':{'min':10,'max':11}, 
                          'line thick':{'min':1, 'max':5},
                          'nlines':{'min':2, 'max':3}, 
@@ -83,12 +83,12 @@ plot_types_params = {
                                  'ymax':10000, 
                                  'nclusters':{'min':1, 'max':20},
                                  'nsamples':{'min':10, 'max':500},
-                                 'cluster std':{'min':-2, 'max':2}, # in terms of factors of the x/y ranges
+                                 'cluster std':{'min':-1, 'max':1.5}, # in terms of factors of the x/y ranges
                                  'noise':{'min':0.05,'max':0.25} # for noise in distribution and color when applicable
                              }
                          }
                      },
-                     'histogram':{'prob':0,
+                     'histogram':{'prob':1,
                          'npoints':{'min':10,'max':10000}, # points for distribution
                          'nbins':{'min':1, 'max':100}, # number of bars
                          'rwidth':{'min':0.2,'max':1.0}, # bin width
@@ -119,12 +119,12 @@ plot_types_params = {
                                  'ymax':10000, 
                                  'nclusters':{'min':1, 'max':20},
                                  'nsamples':{'min':10, 'max':500},
-                                 'cluster std':{'min':-2, 'max':2}, # in terms of factors of the x/y ranges
+                                 'cluster std':{'min':-1, 'max':1.5}, # in terms of factors of the x/y ranges
                                  'noise':{'min':0.05,'max':0.25} # for noise in distribution and color when applicable
                              }
                          }
                     }, 
-                     'scatter':{'prob':0,                        
+                     'scatter':{'prob':1,                        
                          'npoints':{'min':10,'max':100}, 
                          'markers':{
                                'size':{'min':1, 'max':30}
@@ -151,8 +151,8 @@ plot_types_params = {
                                },
                              },
                          'distribution': {
-                             'random':{'prob':0},
-                             'linear':{'prob':0, 
+                             'random':{'prob':1},
+                             'linear':{'prob':1, 
                                        'intersect':(-100,100), # range of "a" in mx + a
                                        'slope':(-5, 5), # range of "m" in mx + a
                                        'noise':(0, 0.25), # noise % range
@@ -160,15 +160,14 @@ plot_types_params = {
                                       },
                              'gmm':{ # scatter gaussian mixture model
                                  'prob':1, 
-                                 #'xmin':-10000, # ranges
-                                 #'xmax':10000,
-                                 #'ymin':-10000,
-                                 #'ymax':10000, 
+                                 'upsample factor log':{'min':2, 'max':6}, # upsample number of points, 10^X
                                  'nclusters':{'min':1, 'max':5},
-                                 'nsamples':{'min':10, 'max':500},
-                                 'cluster std':{'min':-2, 'max':2}, # in terms of factors of the x/y ranges
+                                 'nsamples':{'min':1000, 'max':50000},
+                                 'cluster std':{'min':-1, 'max':0.5}, # in terms of factors of the x/y ranges
                                  'noise':{'min':0.05,'max':0.25}, # for noise in distribution and color when applicable
-                                 'color noise prob': 0.5 # gmm relationship between x/y and color?
+                                 'color noise prob': 0.5, # gmm relationship between x/y and color?
+                                 'max points': 200 # maximum number of points
+
                              }
                          }
                        },
@@ -180,11 +179,16 @@ plot_types_params = {
                          #        },
                          'colors':{'min':-100, 'max':100}, # values for the colors to have
                          'colormap contour':{'prob':0.95}, # prob for contour plot to have a colormap
-                         'color bar':{'location probs':{'right':0.5, 'left':0.05, 'top':0.25, 'bottom':0.05},
+                         'color bar':{'location probs':{'right':0.5, 
+                                                        'left':0.05, 
+                                                        'top':0.25, 
+                                                        'bottom':0.05},
                                      'size percent':{'min':0.05, 'max':0.15},
                                      'pad':{'min':0.01, 'max':0.2}
                                      },
-                         'image or contour':{'prob':{'image':1, 'contour':1, 'both':1}, # probability that this is just an image w/o contour lines (or both) 
+                         'image or contour':{'prob':{'image':1, 
+                                                     'contour':1, 
+                                                     'both':1}, # probability that this is just an image w/o contour lines (or both) 
                                             'both contours':{'prob gray': 0.95, # probability that you'll have just gray colors for contours
                                                             }
                                             }, 
@@ -193,18 +197,18 @@ plot_types_params = {
                          'ymin':-10000,
                          'ymax':10000,
                          'distribution': {
-                             'random':{'prob':0},
-                             'linear':{'prob':0, 
+                             'random':{'prob':1},
+                             'linear':{'prob':1, 
                                        'intersect':(-100,100), # range of "a" in mx + a
                                        'slope':(-5, 5), # range of "m" in mx + a
                                        'noise':(0, 0.25) # noise % range 
                                       },
                              'gmm':{ # contour gaussian mixture model
                                  'prob':1, 
-                                 'nclusters':{'min':1, 'max':5},
+                                 'nclusters':{'min':1, 'max':500},
                                  #'nsamples':{'min':10, 'max':500},
-                                 'upsample factor log':{'min':3, 'max':6}, # upsample number of points, 10^X
-                                 'cluster std':{'min':-2, 'max':2}, # in terms of factors of the x/y ranges
+                                 'upsample factor log':{'min':2, 'max':6}, # upsample number of points, 10^X
+                                 'cluster std':{'min':-1, 'max':1.5}, # in terms of factors of the x/y ranges
                                  'noise':{'min':0.05,'max':0.25}, # for noise in distribution and color when applicable
                                  'color noise prob': 0.5 # gmm relationship between x/y and color?
                              }

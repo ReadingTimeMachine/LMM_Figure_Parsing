@@ -165,7 +165,7 @@ def get_linear(x,y=[],z=[],h=[],
                 grid = (m11*xr + a11)*(1+nxr) + (m22*yr + a22)*(1+nyr)
             else:
                 noise_level1 = function(noise1[0],noise1[1],npoints)
-                print('shape1:', noise_level1.shape)
+                #print('shape1:', noise_level1.shape)
                 noise1 = np.random.normal(0,1,npoints)*noise_level1
                 grid = (m11*xr + a11 + m22*yr + a22)*(1+noise1.T)
                 
