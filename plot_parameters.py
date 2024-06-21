@@ -77,13 +77,13 @@ plot_types_params = {
                                      'prob':0.25, 
                                      'factor':1000
                                  }, 
-                                 'xmin':-10000, # ranges
-                                 'xmax':10000,
-                                 'ymin':-10000,
-                                 'ymax':10000, 
+                                 #'xmin':-10000, # ranges
+                                 #'xmax':10000,
+                                 #'ymin':-10000,
+                                 #'ymax':10000, 
                                  'nclusters':{'min':1, 'max':20},
                                  'nsamples':{'min':10, 'max':500},
-                                 'cluster std':{'min':-1, 'max':1.5}, # in terms of factors of the x/y ranges
+                                 'cluster std':{'min':-2, 'max':0.5}, # in terms of factors of the x/y ranges
                                  'noise':{'min':0.05,'max':0.25} # for noise in distribution and color when applicable
                              }
                          }

@@ -97,9 +97,9 @@ def get_random_data(plot_type,xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=0,
 
 ########################################################################
 ############################# LINEAR ############################
-########################################################################
+#######################################################################
 
-#def get_linear(xmin,xmax,ymin=0,ymax=0, zmin=0,zmax=1,hmin=0,hmax=1,
+
 def get_linear(x,y=[],z=[],h=[],
                ndims=1,
                     a1=(-1,1), a2=(-1,1), a3=(-1,1), a4=(-1,1), # mx + a
@@ -110,15 +110,11 @@ def get_linear(x,y=[],z=[],h=[],
     """
     a1-a4 : the "a's" in mx + a, will be randomly selected from range
     m1-m4 : the "m's" in mx + a, will be randomly selected from range
-    moise1-noise4 : noise as a % of calculated "y", will be randomly selected from range
+    noise1-noise4 : noise as a % of calculated "y", will be randomly selected from range
     """
     if ndims == 1:
         a = function(a1[0],a1[1])
         m = function(m1[0],m1[1])
-        #x = function(low=xmin, high=xmax, size=npoints) # x-values
-        #x = np.sort(x)
-        #print('m:', m, 'a:', a)
-        #print('x:', x)
         y = m*x + a
         # now add noise --> I think maybe multiply?
         noise_level = function(noise1[0],noise1[1])
@@ -132,15 +128,29 @@ def get_linear(x,y=[],z=[],h=[],
             m11 = function(m1[0],m1[1])
             a22 = function(a2[0],a2[1])
             m22 = function(m2[0],m2[1])
+            #noise_level1 = function(noise1[0],noise1[1])
+#            if len(x.shape)>1 and len(y.shape)>1: # have 2d x/y
             noise_level1 = function(noise1[0],noise1[1])
+            #print('noise level shape', noise_level1)
+#            elif len(x) == len(y):
+#                noise_level1 = 
+                
             noise1 = np.random.normal(0,1,npoints[0])*noise_level1
+            #print('noise1 shape', noise1.shape)
             if noise2 is not None: # different noise in different directions
                 noise_level2 = function(noise2[0],noise2[1])
                 noise2 = np.random.normal(0,1,npoints[1])*noise_level2
                 z = (m11*x + a11)*(1+noise1) + (m22*y + a22)*(1+noise2)
             else:
-                noise1 = np.random.normal(0,1,npoints)*noise_level1
+                if len(x) == len(y):
+                    noise1 = np.random.normal(0,1,npoints[0])*noise_level1
+                else:
+                    noise1 = np.random.normal(0,1,npoints)*noise_level1
+                    
+                #print('noise1 shape here', noise1.shape)
                 z = (m11*x + a11 + m22*y + a22)*(1+noise1)
+
+            #print('z shape', z.shape)
                 
             data = {'m1':m11, 'a1':a11, 
                     'm2':m22, 'a2':a22, 
@@ -231,7 +241,9 @@ def get_linear_data(plot_type, dist_params,
                       noise1=dist_params['noise'])#,  
                       # a2=dist_params['intersect'],
                       # m2=dist_params['slope'],
-                      # noise2=dist_params['noise'])   
+                      # noise2=dist_params['noise'])  
+            # colors is now 2D at each combo of x/y
+            
         else:
             colors = get_random(cmin,cmax,ndims=1,npoints=npoints)
 
