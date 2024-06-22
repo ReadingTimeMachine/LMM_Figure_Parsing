@@ -216,6 +216,7 @@ def get_linear_data(plot_type, dist_params,
                 xs.append(x)
             
         ys = []
+        data_line = {}
         for i in range(nlines):
             #y = get_random(ymin[i],ymax[i],ndims=1,npoints=npoints)
             y, data = get_linear(xs[i],ndims=1,npoints=npoints,
@@ -224,7 +225,8 @@ def get_linear_data(plot_type, dist_params,
                           noise1=dist_params['noise'])
             ##y = data['y']
             ys.append(y)
-        return xs,ys, data
+            data_line['line'+str(i)] = data.copy()
+        return xs,ys, data_line
     elif plot_type == 'scatter':
         # x/y
         xs = get_random(xmin,xmax,ndims=1,npoints=npoints) # this will be random still
