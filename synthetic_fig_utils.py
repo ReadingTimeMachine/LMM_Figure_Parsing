@@ -188,63 +188,66 @@ def normalize_params_prob(plot_types_params, panel_params,
             print('renormalizing...')
             print('now: ', ylabel_params['capitalize'])
     
-    
-    p = 0.0
-    for k,v in plot_types_params['scatter']['color bar']['location probs'].items():
-        p += v
-    if p != 1.0:
+
+    if 'scatter' in plot_types_params:
+        p = 0.0
         for k,v in plot_types_params['scatter']['color bar']['location probs'].items():
-            plot_types_params['scatter']['color bar']['location probs'][k] = v/p
-        if verbose:
-            print("plot_types_params['scatter']['color bar']['location probs'] did not add to 1! total =", p)
-            print('renormalizing...')
-            print('now: ', plot_types_params['scatter']['color bar']['location probs'])
+            p += v
+        if p != 1.0:
+            for k,v in plot_types_params['scatter']['color bar']['location probs'].items():
+                plot_types_params['scatter']['color bar']['location probs'][k] = v/p
+            if verbose:
+                print("plot_types_params['scatter']['color bar']['location probs'] did not add to 1! total =", p)
+                print('renormalizing...')
+                print('now: ', plot_types_params['scatter']['color bar']['location probs'])
 
     # images or contours
     # 'image or contour':{'prob':{'image':0.5, 'contour':0.5, 'both':0.5}
-    p = 0.0
-    for k,v in plot_types_params['contour']['color bar']['location probs'].items():
-        p += v
-    if p != 1.0:
+    if 'contour' in plot_types_params:
+        p = 0.0
         for k,v in plot_types_params['contour']['color bar']['location probs'].items():
-            plot_types_params['contour']['color bar']['location probs'][k] = v/p
-        if verbose:
-            print("plot_types_params['contour']['color bar']['location probs'] did not add to 1! total =", p)
-            print('renormalizing...')
-            print('now: ', plot_types_params['contour']['color bar']['location probs'])
-
-    p = 0.0
-    for k,v in plot_types_params['contour']['image or contour']['prob'].items():
-        p += v
-    if p != 1.0:
+            p += v
+        if p != 1.0:
+            for k,v in plot_types_params['contour']['color bar']['location probs'].items():
+                plot_types_params['contour']['color bar']['location probs'][k] = v/p
+            if verbose:
+                print("plot_types_params['contour']['color bar']['location probs'] did not add to 1! total =", p)
+                print('renormalizing...')
+                print('now: ', plot_types_params['contour']['color bar']['location probs'])
+    
+        p = 0.0
         for k,v in plot_types_params['contour']['image or contour']['prob'].items():
-            plot_types_params['contour']['image or contour']['prob'][k] = v/p
-        if verbose:
-            print("plot_types_params['contour']['image or contour']['prob'] did not add to 1! total =", p)
-            print('renormalizing...')
-            print('now: ', plot_types_params['contour']['image or contour']['prob'])
+            p += v
+        if p != 1.0:
+            for k,v in plot_types_params['contour']['image or contour']['prob'].items():
+                plot_types_params['contour']['image or contour']['prob'][k] = v/p
+            if verbose:
+                print("plot_types_params['contour']['image or contour']['prob'] did not add to 1! total =", p)
+                print('renormalizing...')
+                print('now: ', plot_types_params['contour']['image or contour']['prob'])
 
     # distribution probabilities
     #print('')
     for k1 in ['line','histogram','scatter','contour']:
-        p=0
-        if 'distribution' in plot_types_params[k1]:
-            for dist,vals in plot_types_params[k1]['distribution'].items():
-                p += vals['prob']
-            #print('p is:', p)
-            if p != 1.0:
-                ps = plot_types_params[k1]['distribution'].copy()
-                for k,v in plot_types_params[k1]['distribution'].items():
-                    ps[k]['prob'] = v['prob']/p
-                plot_types_params[k1]['distribution'] = ps
-                if verbose:
-                    print("plot_types_params['" + str(k1) + "']['distribution'] probabilities did not add to 1! total =", p)
-                    print('renormalizing...')
-                    ps = []
-                    for k2,v2 in plot_types_params[k1]['distribution'].items():
-                        #print(v2)
-                        ps.append(v2['prob'])
-                    print('now: ', ps)
+        if k1 in plot_types_params:
+            p=0
+            if 'distribution' in plot_types_params[k1]:
+                for dist,vals in plot_types_params[k1]['distribution'].items():
+                    p += vals['prob']
+                #print('p is:', p)
+                if p != 1.0:
+                    ps = plot_types_params[k1]['distribution'].copy()
+                    for k,v in plot_types_params[k1]['distribution'].items():
+                        ps[k]['prob'] = v['prob']/p
+                    plot_types_params[k1]['distribution'] = ps
+                    if verbose:
+                        print("plot_types_params['" + str(k1) + "']['distribution'] probabilities did not add to 1! total =", p)
+                        print('renormalizing...')
+                        ps = []
+                        for k2,v2 in plot_types_params[k1]['distribution'].items():
+                            #print(v2)
+                            ps.append(v2['prob'])
+                        print('now: ', ps)
 
     return plot_types_params, panel_params, title_params, xlabel_params, ylabel_params
 
@@ -350,3 +353,5 @@ def get_font_info(fontsizes, font_names):
     csfont = {'fontname':np.random.choice(font_names)}
 
     return title_fontsize, xlabel_fontsize, ylabel_fontsize, xlabel_ticks_fontsize, ylabel_ticks_fontsize, csfont
+
+

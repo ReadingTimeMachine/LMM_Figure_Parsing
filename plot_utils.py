@@ -414,3 +414,25 @@ def get_histogram_plot(plot_params, data, ax):
         data_out['y error bars'] = [yerr_bars]
         data_out['plot params']['elinewidth'] = elinewidth
     return data_out, ax
+
+###############################################
+############## MAIN PLOT #####################
+###############################################
+
+def make_plot(plot_params, data, ax, plot_type='line'):#, plot_style='default'):
+    if plot_type == 'line':
+        data_out, ax = get_line_plot(plot_params, data, ax)
+        return data_out, ax
+    elif plot_type == 'scatter':
+        data_out, ax = get_scatter_plot(plot_params, data, ax)
+        return data_out, ax
+    elif plot_type == 'histogram':
+        data_out, ax = get_histogram_plot(plot_params, data, ax)
+        return data_out, ax
+    elif plot_type == 'contour':
+        data_out, ax = get_contour_plot(plot_params, data, ax)
+        return data_out, ax
+    else:
+        print('not implement yet!')
+        import sys; sys.exit()
+
