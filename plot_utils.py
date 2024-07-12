@@ -41,13 +41,14 @@ def get_line_plot(plot_params, data, ax):
     xerrs = []; yerrs = []
     hasMarker = False
     p = np.random.uniform(0,1)
+    colors_here = []
     if p <= plot_params['markers']['prob']:
         hasMarker = True
 
     elinewidth = int(round(np.random.uniform(low=plot_params['error bars']['elinewidth']['min'], 
                                             high=plot_params['error bars']['elinewidth']['max'])))
     # draw lines
-    xerrs = []; yerrs = []
+    #xerrs = []; yerrs = []
     for i in range(len(data['ys'])):
         marker = np.random.choice(markers)
         lthick = np.random.uniform(low=plot_params['line thick']['min'], 
@@ -91,11 +92,13 @@ def get_line_plot(plot_params, data, ax):
         markers_here.append(marker)
         datas.append(data_here)
         marker_sizes_here.append(marker_size)
+        colors_here.append(cols)
 
     data_out = {'data':datas, 'plot params':{'linethick':linethicks_here, 
                                             'linestyles':linestyles_here,
                                             'markers':markers_here,
-                                            'marker size':marker_sizes_here}
+                                            'marker size':marker_sizes_here,
+                                            'colors':colors_here}
                }
     # add in x/y errors, if present
     if 'xerrs' in data:
