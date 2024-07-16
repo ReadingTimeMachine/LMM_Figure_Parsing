@@ -34,7 +34,7 @@ colors_ = lambda n: list(map(lambda i: "#" + "%06x" % np.random.randint(0, 0xFFF
 
 
 # LINES PLOT
-def get_line_plot(plot_params, data, ax):
+def get_line_plot(plot_params, data, ax, linestyles=linestyles):
     datas = []
     linestyles_here = []; linethicks_here = []; markers_here = []
     marker_sizes_here = []
@@ -422,9 +422,9 @@ def get_histogram_plot(plot_params, data, ax):
 ############## MAIN PLOT #####################
 ###############################################
 
-def make_plot(plot_params, data, ax, plot_type='line'):#, plot_style='default'):
+def make_plot(plot_params, data, ax, plot_type='line', linestyles=linestyles):#, plot_style='default'):
     if plot_type == 'line':
-        data_out, ax = get_line_plot(plot_params, data, ax)
+        data_out, ax = get_line_plot(plot_params, data, ax, linestyles=linestyles)
         return data_out, ax
     elif plot_type == 'scatter':
         data_out, ax = get_scatter_plot(plot_params, data, ax)
