@@ -6,7 +6,7 @@ from importlib import reload
 import distribution_utils
 reload(distribution_utils)
 from distribution_utils import get_random_data, get_random, \
-   get_linear, get_linear_data, get_data
+   get_linear, get_linear_data#, get_data
 
 
 # for saving numpy arrays
