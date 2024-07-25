@@ -6,7 +6,7 @@ from importlib import reload
 import distribution_utils
 reload(distribution_utils)
 from distribution_utils import get_random_data, get_random, \
-   get_linear, get_linear_data#, get_data
+   get_linear, get_linear_data, get_gmm_data #, get_data
 
 
 # for saving numpy arrays
@@ -344,6 +344,7 @@ def get_histogram_data(plot_params, distribution = 'random',
         hasXErr = False
 
     return xs, ys, hasXErr, hasYErr, data_params # this is different than other plots!
+
 
 
 ###########################################################################

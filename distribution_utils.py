@@ -288,6 +288,13 @@ def get_linear_data(plot_type, dist_params,
 ############################# GMM (in progress!) ############################
 #######################################################################
 
+
+# nclusters = 3
+# cluster_std = ([1,0.05],
+#                [1,1],
+#                [2,2])
+# nsamples = 500
+
 from sklearn.datasets import make_blobs
 from scipy.stats import binned_statistic_2d
 
@@ -317,11 +324,17 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
     if ndims > 1:
         cluster_std1 = np.random.uniform(cluster_std['min'],cluster_std['max'], (nclusters1,ndims))
         # power
+        #print('power:', cluster_std1)
         cluster_std1 = np.power(10,cluster_std1)
+        #print('after power:', cluster_std1)
+        #cluster_std1 *= (xmax-xmin)
     else:
+        #print('ding ding!')
         cluster_std1 = np.random.uniform(cluster_std['min'],cluster_std['max'], nclusters1)
         cluster_std1 = np.power(10,cluster_std1)
         cluster_std1 *= (xmax-xmin)
+
+    #print(cluster_std1)
         
     data_params = {'nsamples':nsamples1, 'nclusters':nclusters1}#,
                   #'cluster_std':cluster_std1}
@@ -331,11 +344,17 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
     #    The number of centers to generate, or the fixed center locations.
     # center_box : tuple of float (min, max), default=(-10.0, 10.0)
     if ndims == 1: # along a line 
+        #print('xmin,xmax', xmin,xmax)
+        #print('nclusters1', nclusters1)
+        #centers_x = np.random.uniform(xmin,xmax,(nclusters1,2))
         centers_x = np.random.uniform(xmin,xmax,nclusters1).reshape(-1, 1)
         X, y_true,centers_ret = make_blobs(n_samples=nsamples1, n_features=1,
                                cluster_std=cluster_std1, centers=centers_x,
                               center_box=(xmin,xmax),
                                       return_centers=True)
+        #**HERE** maybe we need an upsampling factor again
+        # collapse
+        #X = np.sum(X, axis=1)
         # labeling starts at 0
         y_true += 1
         
@@ -347,8 +366,10 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
         # drop outside
         if fit_to_bounds:
             mask = (Xout > xmax) | (Xout < xmin)
+            #print('x,y before:', Xout.shape, y_true.shape)
             y_true_out = y_true.copy()[~mask]
             Xout = Xout[~mask]
+            #print('x,y after:', Xout.shape, y_true.shape)
 
         if not small_data_params:
             data_params['X'] = X
@@ -370,6 +391,8 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
             print('ndims > 3 not supported!')
             import sys; sys.exit()
 
+        #print('mi,ma:', mi,ma)
+        #print('xmin,xmax,ymin,ymax:',xmin,xmax, ymin,ymax)
         centers_x = np.random.uniform(xmin,xmax,nclusters1)
         centers_y = np.random.uniform(ymin,ymax,nclusters1)
         centers = np.zeros((nclusters1,ndims))
@@ -378,6 +401,9 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
         if ndims > 2:
             centers_z = np.random.uniform(zmin,zmax,nclusters1)
             centers[:,2] = centers_z
+        #print('centers',centers)
+        #print("ma,mi", ma,mi)
+        #print('std',cluster_std1*(ma-mi))
         X, y_true,centers_ret = make_blobs(n_samples=nsamples1, n_features=ndims,
                                cluster_std=cluster_std1*(ma-mi), centers=centers,
                               center_box=(mi,ma),
@@ -395,11 +421,15 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
         Xout = Xout[~mask]
         y_true_out = y_true.copy()[~mask]
         mask = (X[:,0] > xmax) | (X[:,0] < xmin) | (X[:,1] > ymax) | (X[:,1] < ymin)
+        #print('X before:', X.shape)
         X = X[~mask]
+        #print('X after:', X.shape)
         y_true = y_true[~mask]
 
         if not small_data_params:
             data_params['X'] = X
+            #data_params['Xout'] = Xout
+            #data_params['y_true_out'] = y_true_out
             data_params['labels'] = y_true
         data_params['centers'] = centers
         data_params['cluster_std'] = cluster_std1
@@ -426,7 +456,9 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
             return Xout, colors, data_params
         else: # we have more work to do (contours)
             # just the shape
+            #y_true[y_true>0] = 1
             y_true[:] = 1
+            #y_true = y_true[~mask]
             nbinsx,nbinsy = nsamples[1],nsamples[2]
             
             binx = np.linspace(xmin,xmax, nbinsx)
@@ -446,10 +478,8 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
             # noise here as well
             noise2 = np.random.normal(0,1,colors.shape)*noise_level
             colors = colors*(1+noise2)
-            
-            #Xout[0,:] = 
+
             xs = (binx[:-1] + binx[1:]) / 2
-            #Xout[1,:] = 
             ys = (biny[:-1] + biny[1:]) / 2
 
             return xs,ys, colors, data_params
@@ -491,6 +521,7 @@ def get_gmm_data(plot_type, dist_params,
             if not isHisto:
                 y, data_params1 = get_gmm(ymin[i],ymax[i],
                                          ndims=1,
+                                         #npoints=npoints,
                               nclusters=dist_params['nclusters'],
                               nsamples=len(xs[i]), # keep same # of x values
                               cluster_std=dist_params['cluster std'],
@@ -498,7 +529,9 @@ def get_gmm_data(plot_type, dist_params,
                                         function=function,
                                          small_data_params = small_data_params,
                                          fit_to_bounds = not isSameX)
+                #print('isSameX', isSameX)
                 if not isSameX and len(y) != len(xs[i]):
+                    #print('hey')
                     inds = np.random.choice(np.arange(0,len(xs[i])),len(y),replace=False)
                     inds = np.sort(inds)
                     xs[i] = xs[i][inds]
@@ -512,11 +545,15 @@ def get_gmm_data(plot_type, dist_params,
                                             function=function,
                                          small_data_params = small_data_params)
                 # repeat from centers to edges
+                #bins = xs[i].copy()
+                #rol
                 y,bin_edges = np.histogram(ypoints, bins=xs[i]) 
                 xs[i] = (bin_edges[:-1] + bin_edges[1:]) / 2 # update bins
                 # rescale
                 y = y.astype('float')
+                #print('ymin,ymax, ymin[i],ymax[i]', np.min(y), np.max(y), ymax[i], ymin[i])
                 y = (y-np.min(y))/(np.max(y)-np.min(y))*(float(ymax[i])-float(ymin[i]))+ymin[i]
+                #print((float(ymax[i])-float(ymin[i]))+ymin[i])
 
             ys.append(y)
             data_params['line'+str(i)] = data_params1.copy()
@@ -566,6 +603,7 @@ def get_gmm_data(plot_type, dist_params,
         npoints = np.random.uniform(dist_params['upsample factor log']['min'], 
                                     dist_params['upsample factor log']['max'])
         npoints = int(np.max(npoints+1)*round(np.power(10,npoints)))
+        #print('npoints get_gmm_data:', npoints)
 
         xs,ys, colors, data_params = get_gmm(xmin,xmax,ymin=ymin,ymax=ymax,
                                      ndims=2,
@@ -578,7 +616,7 @@ def get_gmm_data(plot_type, dist_params,
                                                  cmax=cmax, 
                                         grid=True,
                                          small_data_params = small_data_params)  
+        #xs = X[:,0]
+        #ys = X[:,1]
         
         return xs,ys,colors,data_params
-
-
