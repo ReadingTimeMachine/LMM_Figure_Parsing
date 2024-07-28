@@ -158,16 +158,28 @@ def get_scatter_plot(plot_params, data, ax):
     elinewidth = int(round(np.random.uniform(low=plot_params['error bars']['elinewidth']['min'], 
                                                  high=plot_params['error bars']['elinewidth']['max'])))
     if 'xerrs' in data:# and 'yerrs' not in data: # have x-errors
-        cols_scatter = cols.reshape(-1,4)*255
-        cols_scatter = cols_scatter.astype('int')
+        cols_scatter = cols.reshape(-1,4)#*255
+        print('cols scatter:', cols_scatter.shape)
+        print('cols type:', cols_scatter.dtype)
+        print('cols min/max:', np.min(cols_scatter), np.max(cols_scatter))
+        print('xs:', data['xs'].shape)
+        print('ys:', data['ys'].shape)
+        print('xerrs:', data['xerrs'].shape)
+        #cols_scatter = cols_scatter.astype('int')
         (_, caps, bars) = ax.errorbar(data['xs'],data['ys'],xerr=data['xerrs'],
                                      linewidth=0,elinewidth=elinewidth,
                                      markersize=0, 
                                       ecolor=cols_scatter, zorder=0)
         xerrs.append(bars)
     if 'yerrs' in data:# and 'xerrs' not in data: # have x-errors
-        cols_scatter = cols.reshape(-1,4)*255
-        cols_scatter = cols_scatter.astype('int')
+        cols_scatter = cols.reshape(-1,4)#*255
+        print('cols scatter:', cols_scatter.shape)
+        print('cols type:', cols_scatter.dtype)
+        print('cols min/max:', np.min(cols_scatter), np.max(cols_scatter))
+        print('xs:',data['xs'].shape)
+        print('ys:',data['ys'].shape)
+        print('yerrs:',data['yerrs'].shape)
+        #cols_scatter = cols_scatter.astype('int')
         (_, caps, bars) = ax.errorbar(data['xs'],data['ys'],yerr=data['yerrs'],
                                      linewidth=0, elinewidth=elinewidth,
                                      markersize=0, 

@@ -307,7 +307,8 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
             grid=False,
            function=np.random.uniform, 
            small_data_params = True, 
-           down_sample_max=None, fit_to_bounds = True):
+           down_sample_max=None, fit_to_bounds = True,
+            min_points=5, iloop_max = 8):
 
     """
     small_data_params : won't save X array and y_true for contour plots (big stuffs)
@@ -315,10 +316,13 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
 
     if type(nsamples) == type({}): # will pull randomly
         nsamples1 = np.random.randint(nsamples['min'],nsamples['max'])
+        nsamples_min = min(nsamples['min'],min_points)
     elif type(nsamples) == type([]) or type(nsamples) == type(()):
         nsamples1 = nsamples[0]
+        nsamples_min=min(nsamples[0],min_points)
     else:
         nsamples1 = nsamples # if fixed
+        nsamples_min = min(nsamples,min_points)
     # number of clusters
     nclusters1 = np.random.randint(nclusters['min'],nclusters['max'])
     if ndims > 1:
@@ -393,39 +397,75 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
 
         #print('mi,ma:', mi,ma)
         #print('xmin,xmax,ymin,ymax:',xmin,xmax, ymin,ymax)
-        centers_x = np.random.uniform(xmin,xmax,nclusters1)
-        centers_y = np.random.uniform(ymin,ymax,nclusters1)
-        centers = np.zeros((nclusters1,ndims))
-        centers[:,0] = centers_x
-        centers[:,1] = centers_y
-        if ndims > 2:
-            centers_z = np.random.uniform(zmin,zmax,nclusters1)
-            centers[:,2] = centers_z
-        #print('centers',centers)
-        #print("ma,mi", ma,mi)
-        #print('std',cluster_std1*(ma-mi))
-        X, y_true,centers_ret = make_blobs(n_samples=nsamples1, n_features=ndims,
-                               cluster_std=cluster_std1*(ma-mi), centers=centers,
-                              center_box=(mi,ma),
-                                      return_centers=True)
-        
-        noise_level = function(noise['min'],noise['max'])
-        noise1 = np.random.normal(0,1,(nsamples1,ndims))*noise_level
-        # starts at 0
-        y_true += 1
-                                    
-        # multiply
-        Xout = X*(1+noise1)
-        # drop outside
-        mask = (Xout[:,0] > xmax) | (Xout[:,0] < xmin) | (Xout[:,1] > ymax) | (Xout[:,1] < ymin)
-        Xout = Xout[~mask]
-        y_true_out = y_true.copy()[~mask]
-        mask = (X[:,0] > xmax) | (X[:,0] < xmin) | (X[:,1] > ymax) | (X[:,1] < ymin)
-        #print('X before:', X.shape)
-        X = X[~mask]
-        #print('X after:', X.shape)
-        y_true = y_true[~mask]
+        y_true_out = []
+        isamples_mul = 0
+        while len(y_true_out) < nsamples_min and isamples_mul<=iloop_max: # loop until we get something
+            if isamples_mul > 1: # we are on a new loop
+                print('    on loop:', isamples_mul, nsamples1, len(y_true_out))
+            isamples_mul += 1
+            nsamples1 *= isamples_mul
+            centers_x = np.random.uniform(xmin,xmax,nclusters1)
+            centers_y = np.random.uniform(ymin,ymax,nclusters1)
+            centers = np.zeros((nclusters1,ndims))
+            centers[:,0] = centers_x
+            centers[:,1] = centers_y
+            if ndims > 2:
+                centers_z = np.random.uniform(zmin,zmax,nclusters1)
+                centers[:,2] = centers_z
+            #print('centers',centers)
+            #print("ma,mi", ma,mi)
+            #print('std',cluster_std1*(ma-mi))
+            X, y_true,centers_ret = make_blobs(n_samples=nsamples1, n_features=ndims,
+                                   cluster_std=cluster_std1*(ma-mi), centers=centers,
+                                  center_box=(mi,ma),
+                                          return_centers=True)
+            
+            noise_level = function(noise['min'],noise['max'])
+            noise1 = np.random.normal(0,1,(nsamples1,ndims))*noise_level
+            # starts at 0
+            y_true += 1
+                                        
+            # multiply
+            Xout = X*(1+noise1)
+            # drop outside
+            mask = (Xout[:,0] > xmax) | (Xout[:,0] < xmin) | (Xout[:,1] > ymax) | (Xout[:,1] < ymin)
+            Xout = Xout[~mask]
+            y_true_out = y_true.copy()[~mask]
+            mask = (X[:,0] > xmax) | (X[:,0] < xmin) | (X[:,1] > ymax) | (X[:,1] < ymin)
+            #print('X before:', X.shape)
+            X = X[~mask]
+            #print('X after:', X.shape)
+            y_true = y_true[~mask]
 
+        if isamples_mul > iloop_max: # we have maxed out! drop condition
+            print('    maxed out!')
+            centers_x = np.random.uniform(xmin,xmax,nclusters1)
+            centers_y = np.random.uniform(ymin,ymax,nclusters1)
+            centers = np.zeros((nclusters1,ndims))
+            centers[:,0] = centers_x
+            centers[:,1] = centers_y
+            if ndims > 2:
+                centers_z = np.random.uniform(zmin,zmax,nclusters1)
+                centers[:,2] = centers_z
+            #print('centers',centers)
+            #print("ma,mi", ma,mi)
+            #print('std',cluster_std1*(ma-mi))
+            X, y_true,centers_ret = make_blobs(n_samples=nsamples1, n_features=ndims,
+                                   cluster_std=cluster_std1*(ma-mi), centers=centers,
+                                  center_box=(mi,ma),
+                                          return_centers=True)
+            
+            noise_level = function(noise['min'],noise['max'])
+            noise1 = np.random.normal(0,1,(nsamples1,ndims))*noise_level
+            # starts at 0
+            y_true += 1
+                                        
+            # multiply
+            Xout = X*(1+noise1)
+            y_true_out = y_true.copy()#[~mask]
+
+
+        
         if not small_data_params:
             data_params['X'] = X
             #data_params['Xout'] = Xout
@@ -437,8 +477,8 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
 
         if not grid:
             # colors
-            print(nclusters1)
-            print(y_true_out)
+            #print(nclusters1)
+            #print(y_true_out)
             
             if nclusters1 > 1 and np.max(y_true_out) != np.min(y_true_out):
                 colors = (y_true_out-np.min(y_true_out))/(np.max(y_true_out)-np.min(y_true_out))*(cmax-cmin)+cmin
