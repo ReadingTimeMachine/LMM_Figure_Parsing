@@ -158,25 +158,31 @@ def get_scatter_plot(plot_params, data, ax):
     elinewidth = int(round(np.random.uniform(low=plot_params['error bars']['elinewidth']['min'], 
                                                  high=plot_params['error bars']['elinewidth']['max'])))
     if 'xerrs' in data:# and 'yerrs' not in data: # have x-errors
+        cols_scatter = cols.reshape(-1,4)*255
+        cols_scatter = cols_scatter.astype('int')
         (_, caps, bars) = ax.errorbar(data['xs'],data['ys'],xerr=data['xerrs'],
                                      linewidth=0,elinewidth=elinewidth,
-                                     markersize=0, ecolor=cols, zorder=0)
+                                     markersize=0, 
+                                      ecolor=cols_scatter, zorder=0)
         xerrs.append(bars)
     if 'yerrs' in data:# and 'xerrs' not in data: # have x-errors
+        cols_scatter = cols.reshape(-1,4)*255
+        cols_scatter = cols_scatter.astype('int')
         (_, caps, bars) = ax.errorbar(data['xs'],data['ys'],yerr=data['yerrs'],
                                      linewidth=0, elinewidth=elinewidth,
-                                     markersize=0, ecolor=cols, zorder=0)
+                                     markersize=0, 
+                                      ecolor=cols_scatter, zorder=0)
         yerrs.append(bars)
         
     # save data
     if cax != []:
-        data_out = {'data':data_here, 'color bar':cax, 
+        data_out = {'data':data_here, 'color bar':cax, 'marker':marker, 'marker size':marker_size,
                     'color bar params':{'side':side, 'pad':pad, 'size':size, 
                                        'axis side':axis_side, 
-                                       'marker':marker, 'marker size':marker_size}
+                                       }
                    }
     else:
-        data_out = {'data':data_here}
+        data_out = {'data':data_here, 'marker':marker, 'marker size':marker_size}
 
     # add in x/y errors, if present
     if 'xerrs' in data:

@@ -437,6 +437,9 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
 
         if not grid:
             # colors
+            print(nclusters1)
+            print(y_true_out)
+            
             if nclusters1 > 1 and np.max(y_true_out) != np.min(y_true_out):
                 colors = (y_true_out-np.min(y_true_out))/(np.max(y_true_out)-np.min(y_true_out))*(cmax-cmin)+cmin
             else:
