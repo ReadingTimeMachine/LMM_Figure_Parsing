@@ -245,10 +245,10 @@ def get_linear_data(plot_type, dist_params,
                       # m2=dist_params['slope'],
                       # noise2=dist_params['noise'])  
             # colors is now 2D at each combo of x/y
-            
+            data_color['type'] = 'linear'
         else:
             colors = get_random(cmin,cmax,ndims=1,npoints=npoints)
-            data_color = 'random'
+            data_color = {'type':'random'}
 
         #ys = get_random(ymin,ymax,ndims=1,npoints=npoints)
         #colors = get_random(cmin,cmax,ndims=1,npoints=npoints)
@@ -609,6 +609,7 @@ def get_gmm_data(plot_type, dist_params,
                                     dist_params['upsample factor log']['max'])
         npoints = int(np.max(npoints+1)*round(np.power(10,npoints)))
 
+        data_params_out = {'points':"","colors":''}
         X, colors_dist, data_params = get_gmm(xmin,xmax,ymin=ymin,ymax=ymax,
                                      ndims=2,
                           nclusters=dist_params['nclusters'],
@@ -625,10 +626,14 @@ def get_gmm_data(plot_type, dist_params,
         # colors linear?
         if np.random.uniform(0,1) <= dist_params['color noise prob']: 
             colors = colors_dist
-        else:
+            data_params_out['colors'] = {'type':'gmm, by cluster'}
+        else: #otherwise, make random
             colors = get_random(cmin,cmax,ndims=1,npoints=len(colors_dist))
+            data_params_out['colors'] = {'type':'gmm, random'}
 
-        return xs,ys,colors, data_params
+        data_params_out['points'] = data_params.copy()
+
+        return xs,ys,colors, data_params_out
     elif plot_type == 'histogram': # I feel like this doesn't make too 
                                    # much sense for histograms, but lets just do it
         y, data_params = get_gmm(xmin,xmax,
