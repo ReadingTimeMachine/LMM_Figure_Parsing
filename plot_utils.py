@@ -172,6 +172,8 @@ def get_scatter_plot(plot_params, data, ax):
                                      markersize=0, 
                                       ecolor=cols_scatter, zorder=0)
         except Exception as e:
+            print('Issue with colors in xerrs:')
+            print(e)
             (_, caps, bars) = ax.errorbar(data['xs'],data['ys'],xerr=data['xerrs'],
                                      linewidth=0,elinewidth=elinewidth,
                                      markersize=0, zorder=0)
@@ -192,6 +194,8 @@ def get_scatter_plot(plot_params, data, ax):
                                      markersize=0, 
                                       ecolor=cols_scatter, zorder=0)
         except Exception as e:
+            print('Issue with colors in yerrs:')
+            print(e)
             (_, caps, bars) = ax.errorbar(data['xs'],data['ys'],yerr=data['yerrs'],
                                      linewidth=0, elinewidth=elinewidth,
                                      markersize=0, zorder=0)

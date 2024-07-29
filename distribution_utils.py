@@ -308,7 +308,7 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
            function=np.random.uniform, 
            small_data_params = True, 
            down_sample_max=None, fit_to_bounds = True,
-            min_points=5, iloop_max = 8):
+            min_points=5, iloop_max = 8, max_sample_size = 1000000):
 
     """
     small_data_params : won't save X array and y_true for contour plots (big stuffs)
@@ -399,7 +399,8 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
         #print('xmin,xmax,ymin,ymax:',xmin,xmax, ymin,ymax)
         y_true_out = []
         isamples_mul = 0
-        while len(y_true_out) < nsamples_min and isamples_mul<=iloop_max: # loop until we get something
+        maxReached = True
+        while len(y_true_out) < nsamples_min and isamples_mul<=iloop_max and nsamples1 <= max_sample_size: # loop until we get something
             if isamples_mul > 1: # we are on a new loop
                 print('    on loop:', isamples_mul, nsamples1, len(y_true_out))
             isamples_mul += 1
@@ -436,8 +437,9 @@ def get_gmm(xmin,xmax,ymin=0,ymax=1,zmin=0,zmax=1,
             X = X[~mask]
             #print('X after:', X.shape)
             y_true = y_true[~mask]
+            if len(y_true_out) >= nsamples_min: maxReached = False
 
-        if isamples_mul > iloop_max: # we have maxed out! drop condition
+        if not maxReached: # we have maxed out! drop condition
             print('    maxed out!')
             centers_x = np.random.uniform(xmin,xmax,nclusters1)
             centers_y = np.random.uniform(ymin,ymax,nclusters1)
