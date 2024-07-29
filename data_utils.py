@@ -280,6 +280,8 @@ def get_scatter_data(plot_params, distribution = 'random',
 
     #print(xerr)
     #print(yerr)
+    if data_params == {}:
+        print('missing data params!!!!!!!')
     return xs, ys, colors, xerr, yerr, data_params
 
 
@@ -386,6 +388,8 @@ def get_data(plot_params, plot_type='line', distribution='random', #npoints = 10
             data['yerrs'] = yerr
         if data_params != {}:
             data['data params'] = data_params
+        else:
+            print('in get_data --- NO DATA PARAMS')
         return data
     elif plot_type == 'histogram':
         xs,ys,hasXErr,hasYErr, data_params = get_histogram_data(plot_params,
