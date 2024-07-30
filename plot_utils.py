@@ -348,7 +348,7 @@ def get_contour_plot(plot_params, data, ax):
 
 
 # HISTOGRAMS: PLOTS
-def get_histogram_plot(plot_params, data, ax):
+def get_histogram_plot(plot_params, data, ax, linestyles=linestyles):
     datas = []
     linestyles_here = []; linethicks_here = []; markers_here = []
     marker_sizes_here = []
@@ -463,7 +463,7 @@ def make_plot(plot_params, data, ax, plot_type='line', linestyles=linestyles):#,
         data_out, ax = get_scatter_plot(plot_params, data, ax)
         return data_out, ax
     elif plot_type == 'histogram':
-        data_out, ax = get_histogram_plot(plot_params, data, ax)
+        data_out, ax = get_histogram_plot(plot_params, data, ax, linestyles=linestyles)
         return data_out, ax
     elif plot_type == 'contour':
         data_out, ax = get_contour_plot(plot_params, data, ax)
