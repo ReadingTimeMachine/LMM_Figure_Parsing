@@ -423,13 +423,17 @@ def get_histogram_plot(plot_params, data, ax, linestyles=linestyles):
     if 'xerrs' in data:
         #if len(data['xerrs']) > 0:
         if data['xerrs']: # DIFFERENT
+            data['xerrs'] = errs
             #print("YES XERR")
             xerr_bars = bars
+            #xerr_bars_bars = bars
     elif 'yerrs' in data:
         #if len(data['yerrs']) > 0:
         if data['yerrs']: # DIFFERENT
             #print("YES YERR")
             yerr_bars = bars
+            data['yerrs'] = errs
+            #yerr_bars_bars = bars
 
     data_out = {'data':data_here, 'plot params':{
                                             'linethick':lthick, 
@@ -445,9 +449,11 @@ def get_histogram_plot(plot_params, data, ax, linestyles=linestyles):
     # add in x/y errors, if present
     if len(xerr_bars) > 0:
         data_out['x error bars'] = [xerr_bars] # list for formatting
+        #data_out['x error bars plot'] = [xerr_bars_bars] # list for formatting
         data_out['plot params']['elinewidth'] = elinewidth
     if len(yerr_bars) > 0:
         data_out['y error bars'] = [yerr_bars]
+        #data_out['y error bars plot'] = [yerr_bars_bars]
         data_out['plot params']['elinewidth'] = elinewidth
     return data_out, ax
 
