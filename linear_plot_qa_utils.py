@@ -482,11 +482,12 @@ def q_stats_lines(data, qa_pairs, stat = {'minimum':np.min}, plot_num = 0, retur
         return qa_pairs
 
 
-def q_errorbars_existance_lines(data, qa_pairs, axis = 'x', plot_num = 0, return_qa=True, use_words=True, verbose=True):
+def q_errorbars_existance_lines(data, qa_pairs, axis = 'x', plot_num = 0, return_qa=True, use_words=True, verbose=True, name_of_axis=None):
     """
     use_words : set to True to translate row, column to words; False will use C-ordering indexing
     """
-    
+    if name_of_axis == None:
+        name_of_axis = axis
     # how many plots
     nplots = 0
     for k,v in data.items(): # count number of plots
@@ -504,24 +505,24 @@ def q_errorbars_existance_lines(data, qa_pairs, axis = 'x', plot_num = 0, return
         adder = '(words)'
 
     if nplots == 1: # single plot
-        q = 'Are there error bars on the data along the ' +axis+ '-axis in this figure? '
+        q = 'Are there error bars on the data along the ' +name_of_axis+ '-axis in this figure? '
     else:
         if not use_words:
-            q += 'Are there error bars on the data along the ' +axis+ '-axis for the figure panel on row number ' + str(nrow) + ' and column number ' + str(ncol) + '? '
+            q += 'Are there error bars on the data along the ' +name_of_axis+ '-axis for the figure panel on row number ' + str(nrow) + ' and column number ' + str(ncol) + '? '
         else:
-            q = 'Are there error bars on the data along the ' +axis+ '-axis for the plot in the ' + plot_index_to_words(data['figure']['plot indexes'][plot_num]) + ' panel? '     
+            q = 'Are there error bars on the data along the ' +name_of_axis+ '-axis for the plot in the ' + plot_index_to_words(data['figure']['plot indexes'][plot_num]) + ' panel? '     
 
     # q += 'You are a helpful assistant, please format the output as a json as {"'+axis+'-axis errors":[]} where the value for output is True '
     # q += '(if error bars exist) or False (if error bars do not exist). '
     # q += 'If there is one single array for '+axis+' data values for all lines on the plot, there will be a single True or False in the list, otherwise it will be list of True/False. '
-    q += 'You are a helpful assistant, please format the output as a json as {"'+axis+'-axis errors":""} where the value for the output is True '
+    q += 'You are a helpful assistant, please format the output as a json as {"'+name_of_axis+'-axis errors":""} where the value for the output is True '
     q += '(if error bars exist) or False (if error bars do not exist). '
 
     # get answer
     if axis+'errs' in data['plot' + str(plot_num)]['data'].keys():
-        a = {axis+'-axis errors' + ' ' + adder:True}
+        a = {name_of_axis+'-axis errors' + ' ' + adder:True}
     else:
-        a = {axis+'-axis errors' + ' ' + adder:False}
+        a = {name_of_axis+'-axis errors' + ' ' + adder:False}
 
     #a = list(aout.values())[0]
     if verbose:
@@ -529,11 +530,10 @@ def q_errorbars_existance_lines(data, qa_pairs, axis = 'x', plot_num = 0, return
         print('ANSWER:', a)
     if return_qa: 
         if axis+'-axis errors' + ' ' + adder not in qa_pairs['Level 2']['Plot-level questions']:
-            qa_pairs['Level 2']['Plot-level questions'][axis+'-axis errors' + ' ' + adder] = {'plot'+str(plot_num):{'Q':q, 'A':a}}
+            qa_pairs['Level 2']['Plot-level questions'][name_of_axis+'-axis errors' + ' ' + adder] = {'plot'+str(plot_num):{'Q':q, 'A':a}}
         else:
-            qa_pairs['Level 2']['Plot-level questions'][axis+'-axis errors' + ' ' + adder]['plot'+str(plot_num)] = {'Q':q, 'A':a}
+            qa_pairs['Level 2']['Plot-level questions'][name_of_axis+'-axis errors' + ' ' + adder]['plot'+str(plot_num)] = {'Q':q, 'A':a}
         return qa_pairs
-
 
 
 def q_errorbars_size_lines(data, qa_pairs, axis = 'x', plot_num = 0, return_qa=True, use_words=True, verbose=True):
