@@ -807,7 +807,7 @@ def q_linear_gmm_lines(data, qa_pairs, plot_num = 0, return_qa=True, use_words=T
     q += 'The "nclusters" parameter should be the number of clusters in the model and should be an integer. '
     q += 'The "centers" parameter should be the position of each cluster on the x-axis and should be a float. '
     q += 'The "cluster_std" parameter should be the standard deviation for each cluster on the x-axis and should be a float. '
-    q += 'The "noise level" parameter should be the relative amount of noise added to each linear function for each line and should be a float between 0 and 1. '
+    q += 'The "noise level" parameter should be the relative amount of noise added to the model for each line and should be a float between 0 and 1. '
     
     if use_nlines:
         adder = adder.split(')')[0] + ' + nlines)'
