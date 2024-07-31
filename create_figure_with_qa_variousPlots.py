@@ -87,6 +87,8 @@ plot_params_line['histogram']['distribution']['linear']['prob'] = 1
 
 # ------------- LIBRARIES -----------------
 
+import warnings
+
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
@@ -269,7 +271,7 @@ my_storage = {}
 ilist = np.arange(nPlots)
 
 for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
-
+    warnings.filterwarnings("error")
     print('--------------------- Figure', ifigure, '-------------------')
     ######### pick things ########
     # figure
@@ -506,9 +508,17 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
                 if 'At least one value in the dash list must be positive' in str(e):
                     print(e)
                     print(data_from_plots)
+                # some other things to try again
+                if 'missing from current font' in str(e) or 'does not have a glyph for' in str(e):
+                        # get all font stuffs all over again
+                        title_fontsize, xlabel_fontsize, ylabel_fontsize, \
+                           xlabel_ticks_fontsize, ylabel_ticks_fontsize, \
+                                               csfont = get_font_info(fontsizes, font_names)
+
     
     
     ####### end of plotting ############
+    warnings.filterwarnings("default")
     # try the whole thing again
     width, height = fig.canvas.get_width_height()
     # save data
