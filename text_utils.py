@@ -125,9 +125,9 @@ def get_popular_nouns(data_dir,
     return popular_nouns
 
 
-def get_inline_math(base_dir_arxiv,
-                    dirs_latex,
-                    fullproc_r,
+def get_inline_math(fullproc_r,
+                    base_dir_arxiv = None,
+                    dirs_latex = None,
                     recreate_inlines = False, # if true, you need access to data!
                     verbose = True,
                     use_uniques=True

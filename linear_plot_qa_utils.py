@@ -1,22 +1,6 @@
 import numpy as np
 
-# plot index to words
-n_to_word = {0:'first', 1:'second', 2:'third', 3:'fourth', 4:'fifth', 5:'sixth', 6:'seventh', 7:'eigth', 8:'ninth', 9:'tenth'}
-# ... for the plot in the [] panel...
-def plot_index_to_words(pind):
-    y = pind[0] # row
-    x = pind[1] # column
-    if y == 0 and x == 0:
-        p = 'top-left' 
-    elif y == 0:
-        p = 'top row and ' + n_to_word[x] + ' from the left'
-    elif x == 0:
-        p = n_to_word[y] + ' row and left-most'
-    else:
-        p = n_to_word[x] + 'row and ' + n_to_word[y] + ' column'
-    return p
-
-
+from plot_qa_utils import plot_index_to_words
 
 # this version tries to give column and row numbers
 def q_nlines_plot_plotnums(data, qa_pairs, plot_num = 0, return_qa=True, verbose=True):
