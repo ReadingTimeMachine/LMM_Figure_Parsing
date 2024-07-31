@@ -509,7 +509,8 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
                     print(e)
                     print(data_from_plots)
                 # some other things to try again
-                if 'missing from current font' in str(e) or 'does not have a glyph for' in str(e):
+                if 'missing from current font' in str(e) or 'does not have a glyph for' in str(e) or \
+                  'tight_layout cannot make axes' in str(e):
                         # get all font stuffs all over again
                         title_fontsize, xlabel_fontsize, ylabel_fontsize, \
                            xlabel_ticks_fontsize, ylabel_ticks_fontsize, \
