@@ -993,6 +993,10 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
     # for full thing
     #datas_all[ifigure] = datas.copy()
     plt.close(fig)
-print('DONE!')
+
 # back to basics
 plt.style.use('default')
+
+
+if is_root():
+    print('DONE!')
