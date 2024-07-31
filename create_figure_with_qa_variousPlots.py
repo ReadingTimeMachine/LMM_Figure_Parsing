@@ -15,6 +15,9 @@ import numpy as np
 # stats for doing calculations
 stats = {'minimum':np.min, 'maximum':np.max, 'median':np.median, 'mean':np.mean}
 
+log_space_prob = 0.75 # take logs when approproriate?
+log_space_scale = 1e5 # when to go to log scale
+
 from plot_parameters import plot_types_params
 plot_params = plot_types_params.copy()
 
@@ -362,15 +365,22 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
                     distribution_type = np.random.choice(choices_d, p=probs_d)
                     print('  Distribution Type:', distribution_type)
                     
+                    xlog = False
+                    ylog = False
+                    clog = False
                     xmin,xmax = log_scale_ax()
+                    if np.random.uniform(0,1) <= log_space_prob and xmax-xmin > log_space_scale: xlog = True
                     plot_params_here_ax[plot_type]['xmin']=xmin
                     plot_params_here_ax[plot_type]['xmax']=xmax
                     if plot_type == 'line' or plot_type == 'scatter' or plot_type == 'contour':
                         ymin,ymax = log_scale_ax()
+                        if np.random.uniform(0,1) <= log_space_prob and ymax-ymin > log_space_scale: ylog = True
                         plot_params_here_ax[plot_type]['ymin']=ymin
                         plot_params_here_ax[plot_type]['ymax']=ymax
                     if plot_type == 'scatter' or plot_type == 'contour': 
                         cmin,cmax = log_scale_ax()
+                        # THIS IS NOT IMPLEMENED ANYWHERE
+                        if np.random.uniform(0,1) <= log_space_prob and cmax-cmin > log_space_scale: clog = True
                         plot_params_here_ax[plot_type]['colors']['min']=cmin
                         plot_params_here_ax[plot_type]['colors']['max']=cmax
   
@@ -400,7 +410,12 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
                     #import sys; sys.exit()
                     end_time = time.time()
                     #print('here 4')
-    
+
+                    if xlog:
+                        ax.set_xscale('symlog')
+                    if ylog:
+                        ax.set_yscale('symlog')
+                    
                     # set ticksizes
                     ax.tick_params(axis='x', which='major', labelsize=xlabel_ticks_fontsize, labelfontfamily=csfont['fontname'])
                     ax.tick_params(axis='y', which='major', labelsize=ylabel_ticks_fontsize, labelfontfamily=csfont['fontname'])
