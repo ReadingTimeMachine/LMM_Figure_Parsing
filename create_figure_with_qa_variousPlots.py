@@ -385,6 +385,11 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
                         if np.random.uniform(0,1) <= log_space_prob and cmax-cmin > log_space_scale: clog = True
                         plot_params_here_ax[plot_type]['colors']['min']=cmin
                         plot_params_here_ax[plot_type]['colors']['max']=cmax
+
+                    
+                    # for bars
+                    if plot_type == 'histogram':
+                        xlog = False; ylog=False; clog=False
   
                     
                     #print('here 2')
