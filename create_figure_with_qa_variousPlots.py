@@ -471,7 +471,8 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
     
                 #if not save_smalls:
                 plt.set_cmap(color_map) # do again
-                fig.savefig(fake_figs_dir + 'Picture' + str(ifigure+1) + '.png', dpi=dpi, bbox_inches='tight')
+                fig.tight_layout()
+                fig.savefig(fake_figs_dir + 'Picture' + str(ifigure+1) + '.png', dpi=dpi)#, bbox_inches='tight')
                 print('saved:', fake_figs_dir + 'Picture' + str(ifigure+1) + '.png')
                 # else:
                 #     fig.savefig(save_small_dir + 'Picture' + str(ifigure+1) + '.png', dpi=dpi)
