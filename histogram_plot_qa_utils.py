@@ -31,7 +31,7 @@ def q_nbars_hist_plot_plotnums(data, qa_pairs, plot_num = 0, return_qa=True, ver
         
     q += 'You are a helpful assistant, please format the output as a json as {"'+big_tag+'":""} for this figure panel, where the "'+big_tag+'" value should be an integer.'
     # get answer
-    a = {big_tag + ' ' + adder: len(datas['plot'+str(plot_num)]['data from plot']['data'][0])}
+    a = {big_tag + ' ' + adder: len(data['plot'+str(plot_num)]['data from plot']['data'][0])}
     if verbose:
         print('QUESTION:', q)
         print('ANSWER:', a)
