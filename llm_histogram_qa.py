@@ -44,7 +44,7 @@ async def ask_ollama(model, questions, image_path):
             response = await client.chat(model=model, messages=[
                 {
                     "role": "system",
-                    "content": "You are a helpful assistant, please format the output as a json."
+                    "content": "You are a helpful assistant, please format the output as a json. Sometimes there are multiple graphs per image, if so, please analyze each graph within an image individually and output its information as if it was a distinct image. If there is one plot, then this row and column refers to the single plot. "
                 },
                 {
                     "role": "user",
@@ -113,7 +113,7 @@ async def main():
             responses = await q_multiple(image_path, model, questions)
             all_responses[image_file] = responses    
             
-    print(responses)
+    print(all_responses)
 
 if __name__ == "__main__":
     asyncio.run(main())
