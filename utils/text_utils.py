@@ -10,11 +10,11 @@ import spacy
 nlp = spacy.load("en_core_web_sm")
 
 
-from importlib import reload # debug
-import synthetic_fig_utils # debug
-reload(synthetic_fig_utils) # debug
+#from importlib import reload # debug
+#import utils.synthetic_fig_utils # debug
+#reload(synthetic_fig_utils) # debug
 
-from synthetic_fig_utils import subset_by_percent, \
+from utils.synthetic_fig_utils import subset_by_percent, \
  get_nrows_and_ncols, normalize_params_prob, get_ticks, get_titles_or_labels, \
  get_font_info
 

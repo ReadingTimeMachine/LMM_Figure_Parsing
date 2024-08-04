@@ -24,7 +24,7 @@ for m,mn in marker_dir.items():
 markers = np.array(markers,dtype=object)
 
 # for line styles
-from synthetic_fig_utils import get_line_styles
+from utils.synthetic_fig_utils import get_line_styles
 linestyles = get_line_styles()
 
 # for colors

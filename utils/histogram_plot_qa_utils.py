@@ -1,6 +1,6 @@
 import numpy as np
 
-from plot_qa_utils import plot_index_to_words
+from utils.plot_qa_utils import plot_index_to_words
 
 
 # this version tries to give column and row numbers

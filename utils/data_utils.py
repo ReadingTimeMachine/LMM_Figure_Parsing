@@ -1,11 +1,11 @@
 import numpy as np
 import json
 
-from importlib import reload
+#from importlib import reload
 
-import distribution_utils
-reload(distribution_utils)
-from distribution_utils import get_random_data, get_random, \
+#import distribution_utils
+#reload(distribution_utils)
+from utils.distribution_utils import get_random_data, get_random, \
    get_linear, get_linear_data, get_gmm_data #, get_data
 
 
