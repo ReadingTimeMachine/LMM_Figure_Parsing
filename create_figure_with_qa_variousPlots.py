@@ -103,46 +103,29 @@ import json
 
 import time
 
-# from matplotlib import font_manager
-# plt.rcParams['text.usetex'] = True
 import matplotlib as mpl
 mpl.rcParams['text.usetex'] = True
 mpl.rcParams['text.latex.preamble'] = r'\usepackage{amsmath} \usepackage{amssymb}' #for \text command
 
 # written libs
-#from importlib import reload # debug
-#import synthetic_fig_utils # debug
-#reload(synthetic_fig_utils) # debug
 from utils.synthetic_fig_utils import subset_by_percent, \
  get_nrows_and_ncols, normalize_params_prob, get_ticks, get_titles_or_labels, \
  get_font_info
 
 import plot_parameters
 
-#import plot_utils
-#reload(plot_utils)
 from utils.plot_utils import get_contour_plot, get_histogram_plot, \
    get_line_plot, get_scatter_plot, make_plot#, get_line_plot
 
-# import pixel_location_utils
-# reload(pixel_location_utils)
-# from pixel_location_utils import get_errorbar_pixels, get_data_pixel_locations
-
-# import text_utils
-# reload(text_utils)
 from utils.text_utils import get_popular_nouns, get_inline_math
 
 # create a bunch of fake figures
-#reload(synthetic_fig_utils)
 from utils.synthetic_fig_utils import normalize_params_prob
-#reload(plot_parameters)
 from plot_parameters import panel_params, \
   title_params, xlabel_params, \
   ylabel_params, aspect_fig_params, dpi_params, tight_layout_params, \
   fontsizes, base
 
-# import data_utils
-# reload(data_utils)
 from utils.data_utils import get_data, NumpyEncoder
 
 import utils.distribution_utils
@@ -154,10 +137,6 @@ line_list_thick = np.arange(1,10)
 use_uniques = True # use unique inlines
 verbose = True
 
-#from sys import path
-
-#path.append('../../full_process/')
-#from image_utils import isRectangleOverlap
 # special for this install
 from yt.enable_parallelism import turn_on_parallelism
 from yt.utilities.parallel_tools.parallel_analysis_interface import parallel_objects
@@ -167,9 +146,6 @@ turn_on_parallelism()
 
 # ----------- plotting ----------
 
-# import plot_qa_utils
-# reload(plot_qa_utils)
-
 # for figures in general
 from utils.plot_qa_utils import log_scale_ax, q1, q2, q3, q4, dpi
 
@@ -177,27 +153,15 @@ from utils.plot_qa_utils import log_scale_ax, q1, q2, q3, q4, dpi
 from utils.plot_qa_utils import q_plot_titles, q_plot_xlabels, q_plot_ylabels, ticklabels, \
   q_plot_types
 
-# specific to scatter plots
-# import scatter_plot_qa_utils
-# reload(scatter_plot_qa_utils)
-
 from utils.scatter_plot_qa_utils import q_npoints_scatter_plot_plotnums, q_colors_scatter_plot_plotnums, \
   q_linemarkers_scatters, q_linemarkersize_scatters, q_datapoints_scatters, \
   q_stats_scatters, q_errorbars_size_scatters, q_relationship_scatters, \
   q_relationship_colors_scatters, q_linear_equation_scatters, q_gmm_equation_scatters
 
-# specific to histogram plots
-# import histogram_plot_qa_utils
-# reload(histogram_plot_qa_utils)
-
 from utils.histogram_plot_qa_utils import q_nbars_hist_plot_plotnums, q_colors_hist_plot_plotnums, \
   q_colorlines_hist_plot_plotnums, q_linethickness_hists, q_barpoints_bars, q_stats_hists, \
   q_errorbars_existance_lines, q_errorbars_size_histogram, q_distribution_hists, \
   q_linear_equation_hists, q_gmm_equation_hists
-
-# specific to linear plots
-# import linear_plot_qa_utils
-# reload(linear_plot_qa_utils)
 
 from utils.linear_plot_qa_utils import q_nlines_plot_plotnums, \
   q_nlines_plot, q_colors_lines, q_linestyles_lines, \
@@ -207,13 +171,7 @@ from utils.linear_plot_qa_utils import q_nlines_plot_plotnums, \
   q_linear_equation_lines, q_linear_gmm_lines
 
 # for making plots
-# import plot_utils
-# reload(plot_utils)
 from utils.plot_utils import get_histogram_plot, make_plot
-
-# reload(plot_utils)
-# import distribution_utils
-# reload(distribution_utils)
 
 # ------------------- Plotting parameters ----------------
 
@@ -276,10 +234,8 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
     ######### pick things ########
     # figure
     color_map = 'gray' # hack#np.random.choice(plt.colormaps())
-    #plt.set_cmap(color_map)
     
     npanels, panel_style, nrows, ncols = get_nrows_and_ncols(panel_params)
-    ####npanels, panel_style,nrows,ncols = 1, 'horizontal', 1,1 # HACK
     plot_style = np.random.choice(plot_styles)
     
     aspect_fig = np.random.uniform(low=aspect_fig_params['min'], 
@@ -293,22 +249,18 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
     
     tight_layout = True
 
-
     # get all font stuffs
     title_fontsize, xlabel_fontsize, ylabel_fontsize, \
        xlabel_ticks_fontsize, ylabel_ticks_fontsize, \
                            csfont = get_font_info(fontsizes, font_names)
-    #print("ALL IS WELL HERE 1")
 
     # plot types?
     success = False
     start_time = time.time()
     while not success:
-        #with plt.style.context(plot_style):
         if True:
             plt.style.use(plot_style)
             plt.set_cmap(color_map) 
-            #plt.rcParams['image.cmap'] = 'gray' #color_map
             if tight_layout:
                 fig,axes = plt.subplots(nrows,ncols,figsize=(base*nrows, base*aspect_fig*ncols), 
                                         dpi=dpi,layout='tight')
@@ -333,8 +285,6 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
                 plot_inds = plot_inds.reshape((ashape[0]*ashape[1],-1))
                 axes = axes.flatten()
             
-
-            #**HERE** have to save index
                     
             ######### Generate plot data #########
             #print('here 1')
@@ -391,8 +341,6 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
                     if plot_type == 'histogram':
                         xlog = False; ylog=False; clog=False
   
-                    
-                    #print('here 2')
                     success_get_data = False
                     while not success_get_data:
                         data_for_plot = get_data(plot_params_here_ax[plot_type],
@@ -406,7 +354,6 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
                 
                     ######### PLOT ############
                     start_time = time.time()
-                    #print('here 3')
                     if plot_type != 'histogram':
                         data_from_plot, ax = make_plot(plot_params_here_ax[plot_type], data_for_plot, 
                                              ax, plot_type=plot_type, linestyles=linestyles)#, plot_style=plot_style)
@@ -414,9 +361,7 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
                         data_from_plot, ax = make_plot(plot_params_here_ax[plot_type], data_for_plot, 
                                              ax, plot_type=plot_type, linestyles=linestyles_hist)#, plot_style=plot_style)
                     
-                    #import sys; sys.exit()
                     end_time = time.time()
-                    #print('here 4')
 
                     if xlog:
                         ax.set_xscale('symlog')
@@ -496,9 +441,6 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
                 fig.tight_layout()
                 fig.savefig(fake_figs_dir + 'Picture' + str(ifigure+1) + '.png', dpi=dpi)#, bbox_inches='tight')
                 print('saved:', fake_figs_dir + 'Picture' + str(ifigure+1) + '.png')
-                # else:
-                #     fig.savefig(save_small_dir + 'Picture' + str(ifigure+1) + '.png', dpi=dpi)
-                #     print('saved:', save_small_dir + 'Picture' + str(ifigure+1) + '.png')
                     
                 success = True
             except Exception as e:
@@ -553,16 +495,6 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
         if plot_type == 'scatter':
             colors = data_from_plot['data'].get_facecolors()
             data_pixels['colors'] = colors
-
-    
-        #data_pixels = get_data_pixel_locations(data_from_plot, plot_type, ax, width, height)
-    
-        # # bounding box of square
-        # bbox = ax.get_position() # Bbox(x0, y0, x1, y1)
-        # xpix1 = np.array([bbox.x0,bbox.x1])
-        # ypix1 = np.array([bbox.y0,bbox.y1])
-        # xpix1 *= width
-        # ypix1 *= height
         
         # x-tick locations
         xticks = get_ticks(ax.get_xticklabels(), ax.get_xticklines())
@@ -570,34 +502,17 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
         # y-tick locations
         yticks = get_ticks(ax.get_yticklabels(), ax.get_yticklines())
         
-        # # for colorbars
-        # colorbar_ticks = []
-        # if 'color bar' in data_from_plots[iplot]:
-        #     colorbar = data_from_plots[iplot]['color bar']
-        #     if data_from_plots[iplot]['color bar params']['side'] == 'left' \
-        #        or data_from_plots[iplot]['color bar params']['side'] == 'right':
-        #         ticks = colorbar.get_yticklabels()
-        #         tick_locs = colorbar.get_yticklines(minor=False)
-        #     else:
-        #         ticks = colorbar.get_xticklabels()
-        #         tick_locs = colorbar.get_xticklines(minor=False)
-        #     colorbar_ticks = get_ticks(ticks, tick_locs)
-
         # title
         # Get the bounding box of the title in display space
         title_words = -1
         if title != '':
-            #title_bbox = title.get_window_extent()
             title_words = title.get_text()
         else:
-            #title_bbox = -1
             title_words = ''
     
         # xlabel
-        #xlabel_bbox = xlabel.get_window_extent()
         xlabel_words = xlabel.get_text()
         # ylabel
-        #ylabel_bbox = ylabel.get_window_extent()
         ylabel_words = ylabel.get_text()
     
     
@@ -613,56 +528,26 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
         if data_pixels != {}:
             datas[plot_name]['data pixels'] = data_pixels
         datas[plot_name]['data from plot'] = json.loads(json.dumps(data_from_plot, cls=NumpyEncoder))
-        # if (plot_type == 'scatter' or plot_type == 'contour') and 'color bar' in data_from_plots[iplot]:
-        #     #print('yes indeed')
-        #     w = data_from_plots[iplot]['color bar'].get_window_extent()
-        #     datas[plot_name]['color bar'] = {'xmin':w.x0,'ymin':w.y0,
-        #                                      'xmax':w.x1,'ymax':w.y1, 
-        #                                      'params':data_from_plot['color bar params']}
+        # ticks
         xtmp = []
         for xt in xticks:
-            l = {'data':xt[0]}#, 'xmin': xt[1], 
-                 # 'ymin': xt[2], 
-                 # 'xmax':xt[3], 'ymax':xt[4],
-                 # 'tx':xt[5], 'ty':xt[6]}
+            l = {'data':xt[0]} 
             xtmp.append(l)
         datas[plot_name]['xticks'] = xtmp.copy()
         # 
         xtmp = []
         for xt in yticks:
-            l = {'data':xt[0]}#, 'xmin': xt[1], 
-                #  'ymin': xt[2], 
-                #  'xmax':xt[3], 'ymax':xt[4], 
-                # 'tx':xt[5], 'ty':xt[6]}
+            l = {'data':xt[0]} 
             xtmp.append(l)
         datas[plot_name]['yticks'] = xtmp.copy()
-        # if len(colorbar_ticks) > 0:
-        #     xtmp = []
-        #     for xt in colorbar_ticks:
-        #         l = {'data':xt[0], 'xmin': xt[1], 
-        #              'ymin': xt[2], 
-        #              'xmax':xt[3], 'ymax':xt[4], 
-        #             'tx':xt[5], 'ty':xt[6]}
-        #         xtmp.append(l)
-        #     datas[plot_name]['color bar ticks'] = xtmp.copy()
-            
-        # axis box
-        #datas[plot_name]['square'] = {'xmin':xpix1[0], 'ymin':ypix1[0], 
-        #                                 'xmax':xpix1[1], 'ymax':ypix1[1]}
+        
         # title
-        #if title_bbox != -1:
         if title_words != -1:
-            datas[plot_name]['title'] = {#'xmin':title_bbox.x0, 'ymin':title_bbox.y0, 
-                                            #'xmax':title_bbox.x1, 'ymax':title_bbox.y1,
-                                           'words':title_words}
+            datas[plot_name]['title'] = {'words':title_words}
         else:
             pass
-        datas[plot_name]['xlabel'] = {#'xmin':xlabel_bbox.x0, 'ymin':xlabel_bbox.y0, 
-                                       # 'xmax':xlabel_bbox.x1, 'ymax':xlabel_bbox.y1,
-                                       'words':xlabel_words}
-        datas[plot_name]['ylabel'] = {#'xmin':ylabel_bbox.x0, 'ymin':ylabel_bbox.y0, 
-                                       # 'xmax':ylabel_bbox.x1, 'ymax':ylabel_bbox.y1,
-                                       'words':ylabel_words}
+        datas[plot_name]['xlabel'] = {'words':xlabel_words}
+        datas[plot_name]['ylabel'] = {'words':ylabel_words}
 
     # dump full data
     if save_full_json_file:
@@ -1032,7 +917,6 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
         json.dump(dumped, f)
             
     # for full thing
-    #datas_all[ifigure] = datas.copy()
     plt.close(fig)
 
 # back to basics
