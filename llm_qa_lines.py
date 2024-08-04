@@ -277,7 +277,7 @@ async def describe_graph_level_one(image_path, model):
         'nlines (words)': response_thirteen['message']['content'],
         'line colors': response_thirteen['message']['content'],
         'line styles': response_fourteen['message']['content'],
-        'line thickness': response_fifteen['message']['content'],
+        'line thickness': response_fifteen['mes sage']['content'],
         'line markers': response_sixteen['message']['content'],
         'line marker size': response_seventeen['message']['content'],
 
