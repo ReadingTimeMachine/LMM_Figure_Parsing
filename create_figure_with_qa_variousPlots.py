@@ -1,7 +1,7 @@
 # save files
 fullproc_r = '/Users/jnaiman/LMM_Figure_Parsing/resources/'
 
-# save here
+# save figures here
 fake_figs_dir = '/Users/jnaiman/Dropbox/JCDL2024/paper_submission/data_full/'
 
 save_full_json_file = False
@@ -110,44 +110,44 @@ mpl.rcParams['text.usetex'] = True
 mpl.rcParams['text.latex.preamble'] = r'\usepackage{amsmath} \usepackage{amssymb}' #for \text command
 
 # written libs
-from importlib import reload # debug
-import synthetic_fig_utils # debug
-reload(synthetic_fig_utils) # debug
-from synthetic_fig_utils import subset_by_percent, \
+#from importlib import reload # debug
+#import synthetic_fig_utils # debug
+#reload(synthetic_fig_utils) # debug
+from utils.synthetic_fig_utils import subset_by_percent, \
  get_nrows_and_ncols, normalize_params_prob, get_ticks, get_titles_or_labels, \
  get_font_info
 
 import plot_parameters
 
-import plot_utils
-reload(plot_utils)
-from plot_utils import get_contour_plot, get_histogram_plot, \
+#import plot_utils
+#reload(plot_utils)
+from utils.plot_utils import get_contour_plot, get_histogram_plot, \
    get_line_plot, get_scatter_plot, make_plot#, get_line_plot
 
-import pixel_location_utils
-reload(pixel_location_utils)
-from pixel_location_utils import get_errorbar_pixels, get_data_pixel_locations
+# import pixel_location_utils
+# reload(pixel_location_utils)
+# from pixel_location_utils import get_errorbar_pixels, get_data_pixel_locations
 
-import text_utils
-reload(text_utils)
-from text_utils import get_popular_nouns, get_inline_math
+# import text_utils
+# reload(text_utils)
+from utils.text_utils import get_popular_nouns, get_inline_math
 
 # create a bunch of fake figures
-reload(synthetic_fig_utils)
-from synthetic_fig_utils import normalize_params_prob
-reload(plot_parameters)
+#reload(synthetic_fig_utils)
+from utils.synthetic_fig_utils import normalize_params_prob
+#reload(plot_parameters)
 from plot_parameters import panel_params, \
   title_params, xlabel_params, \
   ylabel_params, aspect_fig_params, dpi_params, tight_layout_params, \
   fontsizes, base
 
-import data_utils
-reload(data_utils)
-from data_utils import get_data, NumpyEncoder
+# import data_utils
+# reload(data_utils)
+from utils.data_utils import get_data, NumpyEncoder
 
-import distribution_utils
+import utils.distribution_utils
 
-from plot_utils import markers
+from utils.plot_utils import markers
 marker_sizes = np.arange(0,10)+1
 line_list_thick = np.arange(1,10)
 
@@ -167,39 +167,39 @@ turn_on_parallelism()
 
 # ----------- plotting ----------
 
-import plot_qa_utils
-reload(plot_qa_utils)
+# import plot_qa_utils
+# reload(plot_qa_utils)
 
 # for figures in general
-from plot_qa_utils import log_scale_ax, q1, q2, q3, q4, dpi
+from utils.plot_qa_utils import log_scale_ax, q1, q2, q3, q4, dpi
 
 # still general, but specific to each plot
-from plot_qa_utils import q_plot_titles, q_plot_xlabels, q_plot_ylabels, ticklabels, \
+from utils.plot_qa_utils import q_plot_titles, q_plot_xlabels, q_plot_ylabels, ticklabels, \
   q_plot_types
 
 # specific to scatter plots
-import scatter_plot_qa_utils
-reload(scatter_plot_qa_utils)
+# import scatter_plot_qa_utils
+# reload(scatter_plot_qa_utils)
 
-from scatter_plot_qa_utils import q_npoints_scatter_plot_plotnums, q_colors_scatter_plot_plotnums, \
+from utils.scatter_plot_qa_utils import q_npoints_scatter_plot_plotnums, q_colors_scatter_plot_plotnums, \
   q_linemarkers_scatters, q_linemarkersize_scatters, q_datapoints_scatters, \
   q_stats_scatters, q_errorbars_size_scatters, q_relationship_scatters, \
   q_relationship_colors_scatters, q_linear_equation_scatters, q_gmm_equation_scatters
 
 # specific to histogram plots
-import histogram_plot_qa_utils
-reload(histogram_plot_qa_utils)
+# import histogram_plot_qa_utils
+# reload(histogram_plot_qa_utils)
 
-from histogram_plot_qa_utils import q_nbars_hist_plot_plotnums, q_colors_hist_plot_plotnums, \
+from utils.histogram_plot_qa_utils import q_nbars_hist_plot_plotnums, q_colors_hist_plot_plotnums, \
   q_colorlines_hist_plot_plotnums, q_linethickness_hists, q_barpoints_bars, q_stats_hists, \
   q_errorbars_existance_lines, q_errorbars_size_histogram, q_distribution_hists, \
   q_linear_equation_hists, q_gmm_equation_hists
 
 # specific to linear plots
-import linear_plot_qa_utils
-reload(linear_plot_qa_utils)
+# import linear_plot_qa_utils
+# reload(linear_plot_qa_utils)
 
-from linear_plot_qa_utils import q_nlines_plot_plotnums, \
+from utils.linear_plot_qa_utils import q_nlines_plot_plotnums, \
   q_nlines_plot, q_colors_lines, q_linestyles_lines, \
   q_linethickness_lines, q_linemarkers_lines, q_linemarkersize_lines, \
   q_datapoints_lines, q_stats_lines, q_errorbars_existance_lines, \
@@ -207,13 +207,13 @@ from linear_plot_qa_utils import q_nlines_plot_plotnums, \
   q_linear_equation_lines, q_linear_gmm_lines
 
 # for making plots
-import plot_utils
-reload(plot_utils)
-from plot_utils import get_histogram_plot, make_plot
+# import plot_utils
+# reload(plot_utils)
+from utils.plot_utils import get_histogram_plot, make_plot
 
-reload(plot_utils)
-import distribution_utils
-reload(distribution_utils)
+# reload(plot_utils)
+# import distribution_utils
+# reload(distribution_utils)
 
 # ------------------- Plotting parameters ----------------
 
@@ -548,15 +548,21 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
         title = titles[iplot]
         xlabel = xlabels[iplot]
         ylabel = ylabels[iplot]
+
+        data_pixels = {}
+        if plot_type == 'scatter':
+            colors = data_from_plot['data'].get_facecolors()
+            data_pixels['colors'] = colors
+
     
-        data_pixels = get_data_pixel_locations(data_from_plot, plot_type, ax, width, height)
+        #data_pixels = get_data_pixel_locations(data_from_plot, plot_type, ax, width, height)
     
-        # bounding box of square
-        bbox = ax.get_position() # Bbox(x0, y0, x1, y1)
-        xpix1 = np.array([bbox.x0,bbox.x1])
-        ypix1 = np.array([bbox.y0,bbox.y1])
-        xpix1 *= width
-        ypix1 *= height
+        # # bounding box of square
+        # bbox = ax.get_position() # Bbox(x0, y0, x1, y1)
+        # xpix1 = np.array([bbox.x0,bbox.x1])
+        # ypix1 = np.array([bbox.y0,bbox.y1])
+        # xpix1 *= width
+        # ypix1 *= height
         
         # x-tick locations
         xticks = get_ticks(ax.get_xticklabels(), ax.get_xticklines())
@@ -564,33 +570,34 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
         # y-tick locations
         yticks = get_ticks(ax.get_yticklabels(), ax.get_yticklines())
         
-        # for colorbars
-        colorbar_ticks = []
-        if 'color bar' in data_from_plots[iplot]:
-            colorbar = data_from_plots[iplot]['color bar']
-            if data_from_plots[iplot]['color bar params']['side'] == 'left' \
-               or data_from_plots[iplot]['color bar params']['side'] == 'right':
-                ticks = colorbar.get_yticklabels()
-                tick_locs = colorbar.get_yticklines(minor=False)
-            else:
-                ticks = colorbar.get_xticklabels()
-                tick_locs = colorbar.get_xticklines(minor=False)
-            colorbar_ticks = get_ticks(ticks, tick_locs)
+        # # for colorbars
+        # colorbar_ticks = []
+        # if 'color bar' in data_from_plots[iplot]:
+        #     colorbar = data_from_plots[iplot]['color bar']
+        #     if data_from_plots[iplot]['color bar params']['side'] == 'left' \
+        #        or data_from_plots[iplot]['color bar params']['side'] == 'right':
+        #         ticks = colorbar.get_yticklabels()
+        #         tick_locs = colorbar.get_yticklines(minor=False)
+        #     else:
+        #         ticks = colorbar.get_xticklabels()
+        #         tick_locs = colorbar.get_xticklines(minor=False)
+        #     colorbar_ticks = get_ticks(ticks, tick_locs)
 
         # title
         # Get the bounding box of the title in display space
+        title_words = -1
         if title != '':
-            title_bbox = title.get_window_extent()
+            #title_bbox = title.get_window_extent()
             title_words = title.get_text()
         else:
-            title_bbox = -1
+            #title_bbox = -1
             title_words = ''
     
         # xlabel
-        xlabel_bbox = xlabel.get_window_extent()
+        #xlabel_bbox = xlabel.get_window_extent()
         xlabel_words = xlabel.get_text()
         # ylabel
-        ylabel_bbox = ylabel.get_window_extent()
+        #ylabel_bbox = ylabel.get_window_extent()
         ylabel_words = ylabel.get_text()
     
     
@@ -603,56 +610,58 @@ for sto, ifigure in parallel_objects(ilist, nProcs,storage=my_storage):
         datas[plot_name]['type'] = plot_type # tag for kind of plot
         datas[plot_name]['distribution'] = distribution_types[iplot]
         datas[plot_name]['data'] = data_for_plot
-        datas[plot_name]['data pixels'] = data_pixels
+        if data_pixels != {}:
+            datas[plot_name]['data pixels'] = data_pixels
         datas[plot_name]['data from plot'] = json.loads(json.dumps(data_from_plot, cls=NumpyEncoder))
-        if (plot_type == 'scatter' or plot_type == 'contour') and 'color bar' in data_from_plots[iplot]:
-            #print('yes indeed')
-            w = data_from_plots[iplot]['color bar'].get_window_extent()
-            datas[plot_name]['color bar'] = {'xmin':w.x0,'ymin':w.y0,
-                                             'xmax':w.x1,'ymax':w.y1, 
-                                             'params':data_from_plot['color bar params']}
+        # if (plot_type == 'scatter' or plot_type == 'contour') and 'color bar' in data_from_plots[iplot]:
+        #     #print('yes indeed')
+        #     w = data_from_plots[iplot]['color bar'].get_window_extent()
+        #     datas[plot_name]['color bar'] = {'xmin':w.x0,'ymin':w.y0,
+        #                                      'xmax':w.x1,'ymax':w.y1, 
+        #                                      'params':data_from_plot['color bar params']}
         xtmp = []
         for xt in xticks:
-            l = {'data':xt[0], 'xmin': xt[1], 
-                 'ymin': xt[2], 
-                 'xmax':xt[3], 'ymax':xt[4],
-                 'tx':xt[5], 'ty':xt[6]}
+            l = {'data':xt[0]}#, 'xmin': xt[1], 
+                 # 'ymin': xt[2], 
+                 # 'xmax':xt[3], 'ymax':xt[4],
+                 # 'tx':xt[5], 'ty':xt[6]}
             xtmp.append(l)
         datas[plot_name]['xticks'] = xtmp.copy()
         # 
         xtmp = []
         for xt in yticks:
-            l = {'data':xt[0], 'xmin': xt[1], 
-                 'ymin': xt[2], 
-                 'xmax':xt[3], 'ymax':xt[4], 
-                'tx':xt[5], 'ty':xt[6]}
+            l = {'data':xt[0]}#, 'xmin': xt[1], 
+                #  'ymin': xt[2], 
+                #  'xmax':xt[3], 'ymax':xt[4], 
+                # 'tx':xt[5], 'ty':xt[6]}
             xtmp.append(l)
         datas[plot_name]['yticks'] = xtmp.copy()
-        if len(colorbar_ticks) > 0:
-            xtmp = []
-            for xt in colorbar_ticks:
-                l = {'data':xt[0], 'xmin': xt[1], 
-                     'ymin': xt[2], 
-                     'xmax':xt[3], 'ymax':xt[4], 
-                    'tx':xt[5], 'ty':xt[6]}
-                xtmp.append(l)
-            datas[plot_name]['color bar ticks'] = xtmp.copy()
+        # if len(colorbar_ticks) > 0:
+        #     xtmp = []
+        #     for xt in colorbar_ticks:
+        #         l = {'data':xt[0], 'xmin': xt[1], 
+        #              'ymin': xt[2], 
+        #              'xmax':xt[3], 'ymax':xt[4], 
+        #             'tx':xt[5], 'ty':xt[6]}
+        #         xtmp.append(l)
+        #     datas[plot_name]['color bar ticks'] = xtmp.copy()
             
         # axis box
-        datas[plot_name]['square'] = {'xmin':xpix1[0], 'ymin':ypix1[0], 
-                                         'xmax':xpix1[1], 'ymax':ypix1[1]}
+        #datas[plot_name]['square'] = {'xmin':xpix1[0], 'ymin':ypix1[0], 
+        #                                 'xmax':xpix1[1], 'ymax':ypix1[1]}
         # title
-        if title_bbox != -1:
-            datas[plot_name]['title'] = {'xmin':title_bbox.x0, 'ymin':title_bbox.y0, 
-                                            'xmax':title_bbox.x1, 'ymax':title_bbox.y1,
+        #if title_bbox != -1:
+        if title_words != -1:
+            datas[plot_name]['title'] = {#'xmin':title_bbox.x0, 'ymin':title_bbox.y0, 
+                                            #'xmax':title_bbox.x1, 'ymax':title_bbox.y1,
                                            'words':title_words}
         else:
             pass
-        datas[plot_name]['xlabel'] = {'xmin':xlabel_bbox.x0, 'ymin':xlabel_bbox.y0, 
-                                        'xmax':xlabel_bbox.x1, 'ymax':xlabel_bbox.y1,
+        datas[plot_name]['xlabel'] = {#'xmin':xlabel_bbox.x0, 'ymin':xlabel_bbox.y0, 
+                                       # 'xmax':xlabel_bbox.x1, 'ymax':xlabel_bbox.y1,
                                        'words':xlabel_words}
-        datas[plot_name]['ylabel'] = {'xmin':ylabel_bbox.x0, 'ymin':ylabel_bbox.y0, 
-                                        'xmax':ylabel_bbox.x1, 'ymax':ylabel_bbox.y1,
+        datas[plot_name]['ylabel'] = {#'xmin':ylabel_bbox.x0, 'ymin':ylabel_bbox.y0, 
+                                       # 'xmax':ylabel_bbox.x1, 'ymax':ylabel_bbox.y1,
                                        'words':ylabel_words}
 
     # dump full data
