@@ -1,3 +1,5 @@
+# not necessary, keeping for debugging purposes
+
 import os
 import asyncio
 from ollama import AsyncClient
