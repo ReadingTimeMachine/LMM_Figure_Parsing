@@ -87,9 +87,9 @@ async def q_multiple(image_path, model, questions):
     #     print(f"Response: {response}\n")
     return responses
 
-async def main():
-    folder_path = "data"
-    model = "llava:7b" 
+async def main(image_path):
+    # folder_path = "data"
+    model = "llava-llama3" 
     questions = [
         "How many scatter points are there for on the figure? please format the output as a json as {\"npoints\":\"\"} for this figure panel, where the \"npoints\" value should be an integer.",
         "What are the colors of each of the scatter plot points? The answer should be in the form of a should be in the form of an RGBA tuple, with one tuple for each scatter plot point. You are a helpful assistant, please format the output as a json as {\"point colors\":'[]'} for this figure panel, where the \"point colors\" value",
@@ -119,17 +119,25 @@ async def main():
         # "What are the parameters for the gaussian mixture model distribution used to create the histogram? please format the output as a json as {\"gmm parameters\":{\"nsamples\":\"\",\"nclusters\":\"\",\"centers\":\"\",\"cluster_std\":\"\",\"noise level\":\"\"}}. Each \"nsamples\" is the number of samples in the distribution and should be an integer. The \"nclusters\" parameter should be the number of clusters in the model and should be an integer. The \"centers\" parameter should be the position of each cluster and should be a list of points which are floats. The \"cluster_std\" parameter should be the standard deviation of each cluster and should be a list of points which are floats. The \"noise level\" parameter should be the relative amount of noise added to the model and should be a float between 0 and 1. If it is not a gaussian mixture model, please do not try to answer the question"
         
     ]
+
+    responses = await q_multiple(image_path, model, questions)
+
+    return responses
+
     
-    all_responses = {}
+    # all_responses = {}
     
-    for image_file in os.listdir(folder_path):
-        if image_file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
-            image_path = os.path.join(folder_path, image_file)
-            print(f"Processing {image_path}...")
-            responses = await q_multiple(image_path, model, questions)
-            all_responses[image_file] = responses    
+    # for image_file in os.listdir(folder_path):
+    #     if image_file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
+    #         image_path = os.path.join(folder_path, image_file)
+    #         print(f"Processing {image_path}...")
+    #         responses = await q_multiple(image_path, model, questions)
+    #         all_responses[image_file] = responses    
             
-    print(all_responses)
+    # print(all_responses)
+
+    # return all_responses
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    # folder_path = "data'"
+    asyncio.run(main(image_path))

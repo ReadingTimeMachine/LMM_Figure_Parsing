@@ -14,10 +14,10 @@ async def ask_ollama(model, questions, image_path):
     responses['Level 3'] = {}
     responses['Level 3']['Plot-level questions'] = {}
     level_one_key_mapping = {
-        "How many bars are in the histogram plot? Please format the output as a json as \"nbars\":\"\".": "nbars",
-        "What is the title of the plot? Please format the output as a json as \"title\":\"\".": "title",
-        "What is the x-axis label? Please format the output as a json as \"xlabel\":\"\".": "xlabel",
-        "What is the y-axis label? Please format the output as a json as \"ylabel\":\"\".": "ylabel",
+        # "How many bars are in the histogram plot? Please format the output as a json as \"nbars\":\"\".": "nbars",
+        # "What is the title of the plot? Please format the output as a json as \"title\":\"\".": "title",
+        # "What is the x-axis label? Please format the output as a json as \"xlabel\":\"\".": "xlabel",
+        # "What is the y-axis label? Please format the output as a json as \"ylabel\":\"\".": "ylabel",
         "What is the color of the bars? The answer should be in the form of a single RGBA tuple. please format the output as a json as \"bar color\":\"\".": "bar_color",
         "What are the locations of the bars? please format the output as a json as {\"left\":[], \"right\":[], \"center\",[], \"height\":[]} where the values of \"left\" and \"right\" are the left and right edges of each bar, and \"center\" is the center of each bar, all in terms of the x-axis values. Additionally, \"height\" is the location of the top of each bar and should be in terms of the y-axis values.": "bar locations"
     }
@@ -80,14 +80,14 @@ async def q_multiple(image_path, model, questions):
     #     print(f"Response: {response}\n")
     return responses
 
-async def main():
-    folder_path = "data"
+async def main(image_path):
+    # folder_path = "data"
     model = "llava-llama3" 
     questions = [
-        "How many bars are in the histogram plot? Please format the output as a json as \"nbars\":\"\".",
-        "What is the title of the plot? Please format the output as a json as \"title\":\"\".",
-        "What is the x-axis label? Please format the output as a json as \"xlabel\":\"\".",
-        "What is the y-axis label? Please format the output as a json as \"ylabel\":\"\".",
+        # "How many bars are in the histogram plot? Please format the output as a json as \"nbars\":\"\".",
+        # "What is the title of the plot? Please format the output as a json as \"title\":\"\".",
+        # "What is the x-axis label? Please format the output as a json as \"xlabel\":\"\".",
+        # "What is the y-axis label? Please format the output as a json as \"ylabel\":\"\".",
         "What is the color of the bars? The answer should be in the form of a single RGBA tuple. please format the output as a json as \"bar color\":\"\".",
         "What are the locations of the bars? please format the output as a json as {\"left\":[], \"right\":[], \"center\",[], \"height\":[]} where the values of \"left\" and \"right\" are the left and right edges of each bar, and \"center\" is the center of each bar, all in terms of the x-axis values. Additionally, \"height\" is the location of the top of each bar and should be in terms of the y-axis values.",
         "What are the minimum data values in this figure? Please format the output as a json as {\"minimum x\":\"\"} where the minimum value of \"x\" is calculated from the data values used to create the plot in the format of floats.",
@@ -104,16 +104,25 @@ async def main():
         
     ]
     
-    all_responses = {}
+    responses = await q_multiple(image_path, model, questions)
+
+
+    return responses
+
+
+    # all_responses = {}
     
-    for image_file in os.listdir(folder_path):
-        if image_file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
-            image_path = os.path.join(folder_path, image_file)
-            print(f"Processing {image_path}...")
-            responses = await q_multiple(image_path, model, questions)
-            all_responses[image_file] = responses    
+    # for image_file in os.listdir(folder_path):
+    #     if image_file.lower().endswith(('.png')):
+    #         image_path = os.path.join(folder_path, image_file)
+    #         print(f"Processing {image_path}...")
+    #         responses = await q_multiple(image_path, model, questions)
+    #         all_responses[image_file] = responses    
             
-    print(all_responses)
+    # print(all_responses)
+
+    # return all_responses
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    folder_path = "data"
+    asyncio.run(main(image_path))
