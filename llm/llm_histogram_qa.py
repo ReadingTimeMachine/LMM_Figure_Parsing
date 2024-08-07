@@ -99,13 +99,15 @@ async def main(image_path):
         "What is the approximate size of the error bars along the x-axis in this figure? please format the output as a json as {\"x-axis error size\":\"\"} where the value is a float and the average size of the error bars along this axis. The average size of the error bar can be calculated as the average length of the bar divided by the difference between the maximum and minimum data values along the x-axis.",
         "What is the approximate size of the error bars along the y-axis in this figure? please format the output as a json as {\"y-axis error size\":\"\"} where the value is a float and the average size of the error bars along this axis. The average size of the error bar can be calculated as the average length of the bar divided by the difference between the maximum and minimum data values along the y-axis.",
         "What is the distribution used to create the histogram? please format the output as a json as {\"distribution\":\"\"} the value is a string.",
-        "What are the parameters for the linear distribution used to create the histogram? please format the output as a json as {\"linear distribution\":{\"m\":\"\",\"a\":\"\",\"noise level\":\"\"}}. Here, \"m\" is the slope of the relationship and \"a\" is the intercept and both should be floats. The \"noise level\" parameter should be the relative amount of noise added to the linear function for the relationship and should be a float between 0 and 1. If this is not a linear relationship, please do not try to answer the question",
-        "What are the parameters for the gaussian mixture model distribution used to create the histogram? please format the output as a json as {\"gmm parameters\":{\"nsamples\":\"\",\"nclusters\":\"\",\"centers\":\"\",\"cluster_std\":\"\",\"noise level\":\"\"}}. Each \"nsamples\" is the number of samples in the distribution and should be an integer. The \"nclusters\" parameter should be the number of clusters in the model and should be an integer. The \"centers\" parameter should be the position of each cluster and should be a list of points which are floats. The \"cluster_std\" parameter should be the standard deviation of each cluster and should be a list of points which are floats. The \"noise level\" parameter should be the relative amount of noise added to the model and should be a float between 0 and 1. If it is not a gaussian mixture model, please do not try to answer the question"
+        "What are the parameters for the linear distribution used to create the histogram? please format the output as a json as {\"linear distribution\":{\"m\":\"\",\"a\":\"\",\"noise level\":\"\"}}. Here, \"m\" is the slope of the relationship and \"a\" is the intercept and both should be floats. The \"noise level\" parameter should be the relative amount of noise added to the linear function for the relationship and should be a float between 0 and 1. If this is not a linear relationship, please do simply say so",
+        "What are the parameters for the gaussian mixture model distribution used to create the histogram? please format the output as a json as {\"gmm parameters\":{\"nsamples\":\"\",\"nclusters\":\"\",\"centers\":\"\",\"cluster_std\":\"\",\"noise level\":\"\"}}. Each \"nsamples\" is the number of samples in the distribution and should be an integer. The \"nclusters\" parameter should be the number of clusters in the model and should be an integer. The \"centers\" parameter should be the position of each cluster and should be a list of points which are floats. The \"cluster_std\" parameter should be the standard deviation of each cluster and should be a list of points which are floats. The \"noise level\" parameter should be the relative amount of noise added to the model and should be a float between 0 and 1. If it is not a gaussian mixture model, please simply say so"
         
     ]
     
-    responses = await q_multiple(image_path, model, questions)
-
+    try:
+        responses = await asyncio.wait_for( q_multiple(image_path, model, questions), timeout=180)
+    except asyncio.TimeoutError:
+        responses = 'Timeout'
 
     return responses
 
@@ -124,5 +126,5 @@ async def main(image_path):
     # return all_responses
 
 if __name__ == "__main__":
-    folder_path = "data"
+    # folder_path = "data"
     asyncio.run(main(image_path))

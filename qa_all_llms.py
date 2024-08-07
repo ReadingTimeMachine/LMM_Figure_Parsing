@@ -1,23 +1,42 @@
+# use L4 colab or else it will time out w more complex qs
 import os
 import json
 import asyncio
 
 from llm.llm_histogram_qa import main as process_histogram
-from llm.llm_linear_qa import main as process_linear
+# from llm.llm_linear_qa import main as process_linear
 from llm.llm_plot_qa import main as process_plot
 from llm.llm_scatter_qa import main as process_scatter
 
 async def process_image_scripts(image_path):
     results = {}
-    results['histogram'] = await process_histogram(image_path)
-    results['linear'] = await process_linear(image_path)
-    results['plot'] = await process_plot(image_path)
-    results['scatter'] = await process_scatter(image_path)
+    try:
+            results['histogram'] = await asyncio.wait_for(process_histogram(image_path), timeout=200)
+    except asyncio.TimeoutError:
+        results['histogram'] = 'Timeout'
+    
+    # try:
+    #     results['linear'] = await asyncio.wait_for(process_linear(image_path), timeout=200)
+    # except asyncio.TimeoutError:
+    #     results['linear'] = 'Timeout'
+    
+    try:
+        results['plot'] = await asyncio.wait_for(process_plot(image_path), timeout=200)
+    except asyncio.TimeoutError:
+        results['plot'] = 'Timeout'
+    
+    try:
+        results['scatter'] = await asyncio.wait_for(process_scatter(image_path), timeout=200)
+    except asyncio.TimeoutError:
+        results['scatter'] = 'Timeout'
+
+
     return results
 
 async def main():
     folder_path = "data"
     output_folder = "results" 
+    final_folder = os.path.join(output_folder, "final")
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -51,7 +70,7 @@ async def main():
             combined_results[base_name][key] = data
 
     for base_name, data in combined_results.items():
-        combined_file_path = os.path.join(output_folder, f"{base_name}.json")
+        combined_file_path = os.path.join(final_folder, f"{base_name}.json")
         with open(combined_file_path, 'w') as f:
             json.dump(data, f, indent=4)
         print(f"Saved combined results to {combined_file_path}")

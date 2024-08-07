@@ -75,8 +75,13 @@ async def main(image_path):
         # "What are the values for each of the tick marks on the y-axis? Please format the output as a json as where each element of the outer list refers to a single panel",
         
     ]
+
+    try:
+        responses = await asyncio.wait_for( q_multiple(image_path, model, questions), timeout=180)
+    except asyncio.TimeoutError:
+        responses = 'Timeout'
     
-    responses = await q_multiple(image_path, model, questions)
+    
 
 
     # all_responses = {}
