@@ -4,7 +4,7 @@ fullproc_r = '/Users/jnaiman/LMM_Figure_Parsing/resources/'
 # save figures here
 fake_figs_dir = '/Users/jnaiman/Dropbox/JCDL2024/paper_submission/data_full/'
 
-save_full_json_file = False
+save_full_json_file = True
 
 nPlots = 200
 
