@@ -15,10 +15,10 @@ async def ask_ollama(model, questions, image_path):
     responses['Level 3']['Plot-level questions'] = {}
     level_one_key_mapping = {
         "How many scatter points are there for on the figure? please format the output as a json as {\"npoints\":\"\"} for this figure panel, where the \"npoints\" value should be an integer.": "npoints",
-        "What are the colors of each of the scatter plot points? The answer should be in the form of a should be in the form of an RGBA tuple, with one tuple for each scatter plot point. You are a helpful assistant, please format the output as a json as {\"point colors\":'[]'} for this figure panel, where the \"point colors\" value": "point_colors",
+        "What are the colors of each of the scatter plot points? The answer should be in the form of a should be in the form of an RGBA tuple, with one tuple for each scatter plot point. Please format the output as a json as {\"point colors\":'[]'}": "point_colors",
         "What are the matplotlib scatter plot markers in this figure? Please format the output as a json \"scatter plot marker\":\"\". where the value of the entry should be the matplotlib marker used for this scatter plot.": "scatter plot marker",
         "What are the matplotlib scatter plot marker sizes in this figure? Please format the output as a json \"scatter plot marker sizes\":\"\" where the value of the entry should be the matplotlib marker size used for this scatter plot as an integer.": "scatter plot marker size",
-        "What are the data values in this figure? lease format the output as a json as {\"x\":[], \"y\":[]} where the values of \"x\" and \"y\" are the data values used to create the plot and are in the format of a list of floats.": "data values"
+        "What are the data values in this figure? Please format the output as a json as {\"x\":[], \"y\":[]} where the values of \"x\" and \"y\" are the data values used to create the plot and are in the format of a list of floats.": "data values"
         # "What is the x-axis label? Please format the output as a json as \"xlabel\":\"\".": "xlabel",
         # "What is the y-axis label? Please format the output as a json as \"ylabel\":\"\".": "ylabel",
         # "What is the color of the bars? The answer should be in the form of a single RGBA tuple. please format the output as a json as \"bar color\":\"\".": "bar_color",
@@ -87,15 +87,15 @@ async def q_multiple(image_path, model, questions):
     #     print(f"Response: {response}\n")
     return responses
 
-async def main():
-    folder_path = "data"
-    model = "llava:7b" 
+async def main(image_path):
+    # folder_path = "data"
+    model = "llava-llama3" 
     questions = [
         "How many scatter points are there for on the figure? please format the output as a json as {\"npoints\":\"\"} for this figure panel, where the \"npoints\" value should be an integer.",
-        "What are the colors of each of the scatter plot points? The answer should be in the form of a should be in the form of an RGBA tuple, with one tuple for each scatter plot point. You are a helpful assistant, please format the output as a json as {\"point colors\":'[]'} for this figure panel, where the \"point colors\" value",
+        # "What are the colors of each of the scatter plot points? The answer should be in the form of a should be in the form of an RGBA tuple, with one tuple for each scatter plot point. Please format the output as a json as {\"point colors\":'[]'} for this figure panel, where the \"point colors\" value",
         "What are the matplotlib scatter plot markers in this figure? Please format the output as a json \"scatter plot marker\":\"\". where the value of the entry should be the matplotlib marker used for this scatter plot.",
         "What are the matplotlib scatter plot marker sizes in this figure? Please format the output as a json \"scatter plot marker sizes\":\"\" where the value of the entry should be the matplotlib marker size used for this scatter plot as an integer.",
-        "What are the data values in this figure? lease format the output as a json as {\"x\":[], \"y\":[]} where the values of \"x\" and \"y\" are the data values used to create the plot and are in the format of a list of floats.",
+        # "What are the data values in this figure? Please format the output as a json as {\"x\":[], \"y\":[]} where the values of \"x\" and \"y\" are the data values used to create the plot and are in the format of a list of floats.",
         "What are the minimum data values in this figure? Please format the output as a json as {\"minimum x\":\"\"} where the minimum value of \"x\" is calculated from the data values used to create the plot in the format of floats.",
         "What are the maximum data values in this figure? Please format the output as a json as {\"maximum x\":\"\"} where the maximum value of \"x\" is calculated from the data values used to create the plot in the format of floats.",
         "What are the mean data values in this figure? Please format the output as a json as {\"mean x\":\"\"} where the mean value of \"x\" is calculated from the data values used to create the plot in the format of floats.",
@@ -107,7 +107,7 @@ async def main():
         "What are the parameters for the linear relationship between the x and y values in this figure? please format the output as a json as {\"color\":{\"m\":\"\",\"a\":\"\",\"noise level\":\"\"}}. Here, \"m\" is the slope of the relationship and \"a\" is the intercept and both should be floats. The \"noise level\" parameter should be the relative amount of noise added to the linear function for the relationship and should be a float between 0 and 1.",
         "What are the parameters for the linear relationship between the x and y values in this figure and the colors of the scatter points? please format the output as a json as {\"colors\":{\"m1\":\"\",\"a1\":\"\",\"m2\":\"\",\"a2\":\"\",\"noise level\":\"\"}}. Here, \"m1\" is the slope of the relationship and \"a1\" is the intercept in the \"x\" axis direction and both should be floats. Additionally, \"m2\" is the slope of the relationship and \"a2\" is the intercept in the \"y\" axis direction and both should be floats. The \"noise level\" parameter should be the relative amount of noise added to the linear function for the relationship and should be a float between 0 and 1.",
         "What are the parameters for the gaussian mixture model relationship between the x and y values in this figure? please format the output as a json as {\"gmm parameters\":{\"nsamples\":\"\",\"nclusters\":\"\",\"centers\":\"\",\"cluster_std\":\"\",\"noise level\":\"\"}}. Each \"nsamples\" is the number of samples in the distribution and should be an integer. The \"nclusters\" parameter should be the number of clusters in the model and should be an integer. The \"centers\" parameter should be the position of each cluster and should be a list of points which are floats. The \"cluster_std\" parameter should be the standard deviation of each cluster and should be a list of points which are floats. The \"noise level\" parameter should be the relative amount of noise added to the model and should be a float between 0 and 1. If it is not a gaussian mixture model, please do not try to answer the question",
-        "What are the parameters for the gaussian mixture model relationship between the x and y values in this figure and the colors of the scatter points? You are a helpful assistant, please format the output as a json as {\"colors\":\"\"} where the value is either \"random\" for randomly colored points or \"by cluster\" if the points from each gaussian mixure model cluster are colored by cluster membership.",
+        "What are the parameters for the gaussian mixture model relationship between the x and y values in this figure and the colors of the scatter points? Please format the output as a json as {\"colors\":\"\"} where the value is either \"random\" for randomly colored points or \"by cluster\" if the points from each gaussian mixure model cluster are colored by cluster membership.",
         # "What is the y-axis label? Please format the output as a json as \"ylabel\":\"\".",
         # "What is the color of the bars? The answer should be in the form of a single RGBA tuple. please format the output as a json as \"bar color\":\"\".",
         # "What are the locations of the bars? please format the output as a json as {\"left\":[], \"right\":[], \"center\",[], \"height\":[]} where the values of \"left\" and \"right\" are the left and right edges of each bar, and \"center\" is the center of each bar, all in terms of the x-axis values. Additionally, \"height\" is the location of the top of each bar and should be in terms of the y-axis values.",
@@ -119,17 +119,28 @@ async def main():
         # "What are the parameters for the gaussian mixture model distribution used to create the histogram? please format the output as a json as {\"gmm parameters\":{\"nsamples\":\"\",\"nclusters\":\"\",\"centers\":\"\",\"cluster_std\":\"\",\"noise level\":\"\"}}. Each \"nsamples\" is the number of samples in the distribution and should be an integer. The \"nclusters\" parameter should be the number of clusters in the model and should be an integer. The \"centers\" parameter should be the position of each cluster and should be a list of points which are floats. The \"cluster_std\" parameter should be the standard deviation of each cluster and should be a list of points which are floats. The \"noise level\" parameter should be the relative amount of noise added to the model and should be a float between 0 and 1. If it is not a gaussian mixture model, please do not try to answer the question"
         
     ]
+
+    try:
+        responses = await asyncio.wait_for( q_multiple(image_path, model, questions), timeout=180)
+    except asyncio.TimeoutError:
+        responses = 'Timeout'
+        
+    return responses
+
     
-    all_responses = {}
+    # all_responses = {}
     
-    for image_file in os.listdir(folder_path):
-        if image_file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
-            image_path = os.path.join(folder_path, image_file)
-            print(f"Processing {image_path}...")
-            responses = await q_multiple(image_path, model, questions)
-            all_responses[image_file] = responses    
+    # for image_file in os.listdir(folder_path):
+    #     if image_file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
+    #         image_path = os.path.join(folder_path, image_file)
+    #         print(f"Processing {image_path}...")
+    #         responses = await q_multiple(image_path, model, questions)
+    #         all_responses[image_file] = responses    
             
-    print(all_responses)
+    # print(all_responses)
+
+    # return all_responses
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    # folder_path = "data'"
+    asyncio.run(main(image_path))
